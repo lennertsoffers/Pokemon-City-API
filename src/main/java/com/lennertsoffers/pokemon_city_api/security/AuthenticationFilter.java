@@ -26,7 +26,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public AuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
 
-        setFilterProcessesUrl("/api/login");
+        setFilterProcessesUrl("/auth/login");
     }
 
     @Override
@@ -46,8 +46,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         List<String> claimValue = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         String issuer = request.getRequestURL().toString();
 
-        String accessToken = JwtTokenUtils.genToken(subject, "roles", claimValue, issuer, TimeUtils.minToMilliseconds(60));
-        String refreshToken = JwtTokenUtils.genToken(subject, "roles", claimValue, issuer, TimeUtils.daysToMilliseconds(15));
+        String accessToken = JwtTokenUtils.genToken(subject, "roles", claimValue, issuer, JwtTokenUtils.DEFAULT_JWT_ALIVE_TIME);
+        String refreshToken = JwtTokenUtils.genToken(subject, "roles", claimValue, issuer, JwtTokenUtils.DEFAULT_REFRESH_ALIVE_TIME);
 
         Map<String, String> tokens = new HashMap<>();
         tokens.put("access_token", accessToken);

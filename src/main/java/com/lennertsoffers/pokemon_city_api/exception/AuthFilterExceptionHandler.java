@@ -17,8 +17,6 @@ public class AuthFilterExceptionHandler {
         Map<String, String> error = new HashMap<>();
         error.put("error_message", e.getMessage());
 
-        System.out.println(e.getMessage());
-
         new ObjectMapper().writeValue(response.getOutputStream(), error);
     }
 }
