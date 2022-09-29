@@ -1,15 +1,14 @@
 package com.lennertsoffers.pokemon_city_api.service;
 
-import com.lennertsoffers.pokemon_city_api.model.Role;
 import com.lennertsoffers.pokemon_city_api.model.User;
+import com.lennertsoffers.pokemon_city_api.security.RoleType;
 
 import java.util.List;
 
 public interface UserService {
     void saveUser(User user);
-    void saveRole(Role role);
 
-    User addRoleToUser(String username, String roleName);
+    User addRoleToUser(String username, RoleType roleType);
 
     User getUser(String username);
     List<User> getUsers();

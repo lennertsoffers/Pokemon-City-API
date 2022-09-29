@@ -4,6 +4,7 @@ import com.lennertsoffers.pokemon_city_api.model.Role;
 import com.lennertsoffers.pokemon_city_api.model.User;
 import com.lennertsoffers.pokemon_city_api.repository.RoleRepository;
 import com.lennertsoffers.pokemon_city_api.repository.UserRepository;
+import com.lennertsoffers.pokemon_city_api.security.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,8 +17,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -43,14 +44,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void saveRole(Role role) {
-        roleRepository.save(role);
-    }
-
-    @Override
-    public User addRoleToUser(String username, String roleName) {
+    public User addRoleToUser(String username, RoleType roleType) {
         User user = userRepository.findByUsername(username);
-        Role role = roleRepository.findByName(roleName);
+        Role role = roleRepository.findByName(roleType.fullName());
 
         user.getRoles().add(role);
 
