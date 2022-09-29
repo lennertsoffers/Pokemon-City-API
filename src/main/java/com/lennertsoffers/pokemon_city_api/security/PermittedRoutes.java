@@ -4,9 +4,9 @@ import java.util.List;
 
 public class PermittedRoutes {
     private static final List<String> permittedRoutes = List.of(
-            "/api/login",
-            "/api/register",
-            "/api/refreshToken"
+            "/auth/login",
+            "/auth/register",
+            "/auth/refreshToken"
     );
 
     public static String toRegex() {
