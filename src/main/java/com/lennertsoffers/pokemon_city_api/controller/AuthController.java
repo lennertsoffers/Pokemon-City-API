@@ -8,6 +8,7 @@ import com.lennertsoffers.pokemon_city_api.model.User;
 import com.lennertsoffers.pokemon_city_api.model.dto.UserCreationDto;
 import com.lennertsoffers.pokemon_city_api.service.UserService;
 import com.lennertsoffers.pokemon_city_api.util.JwtTokenUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -20,15 +21,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.lennertsoffers.pokemon_city_api.security.RoleType.*;
+
 @RestController
 @RequestMapping("/auth")
 @Validated
+@RequiredArgsConstructor
 public class AuthController {
     private final UserService userService;
-
-    public AuthController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping("/refreshToken")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -66,7 +66,7 @@ public class AuthController {
         User user = new User(null, userCreationDto.username(), userCreationDto.password());
         userService.saveUser(user);
 
-        user = userService.addRoleToUser(userCreationDto.username(), "ROLE_USER");
+        user = userService.addRoleToUser(userCreationDto.username(), PLAYER);
 
         JwtTokenUtils.addTokensToResponse(
                 user.getUsername(),

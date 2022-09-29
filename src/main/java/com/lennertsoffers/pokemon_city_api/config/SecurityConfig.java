@@ -1,7 +1,10 @@
 package com.lennertsoffers.pokemon_city_api.config;
 
+import com.lennertsoffers.pokemon_city_api.model.Role;
 import com.lennertsoffers.pokemon_city_api.security.AuthDsl;
 import com.lennertsoffers.pokemon_city_api.security.PermittedRoutes;
+import com.lennertsoffers.pokemon_city_api.security.RoleType;
+import com.lennertsoffers.pokemon_city_api.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,11 +18,24 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.Arrays;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final RoleService roleService;
+
+    @Bean
+    public void saveRoles() {
+        Arrays.stream(RoleType.values()).forEach(roleType -> {
+            if (!roleService.rolePersisted(roleType)) {
+                roleService.saveRole(new Role(null, roleType.fullName()));
+            }
+        });
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

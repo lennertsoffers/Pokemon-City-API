@@ -1,12 +1,13 @@
 package com.lennertsoffers.pokemon_city_api;
 
-import com.lennertsoffers.pokemon_city_api.model.Role;
 import com.lennertsoffers.pokemon_city_api.model.User;
 import com.lennertsoffers.pokemon_city_api.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import static com.lennertsoffers.pokemon_city_api.security.RoleType.*;
 
 @SpringBootApplication
 public class PokemonCityApiApplication {
@@ -15,26 +16,22 @@ public class PokemonCityApiApplication {
 		SpringApplication.run(PokemonCityApiApplication.class, args);
 	}
 
+	// TODO - Remove bean for production
 	@Bean
 	public CommandLineRunner run(UserService userService) {
 		return args -> {
-			userService.saveRole(new Role(null, "ROLE_USER"));
-			userService.saveRole(new Role(null, "ROLE_MANAGER"));
-			userService.saveRole(new Role(null, "ROLE_ADMIN"));
-			userService.saveRole(new Role(null, "ROLE_SUPER_ADMIN"));
+			User john = new User(null, "John Travolta", "1234");
+			if (userService.getUser(john.getUsername()) == null) {
+				userService.saveUser(john);
+				userService.addRoleToUser(john.getUsername(), PLAYER);
+			}
 
-			userService.saveUser(new User(null, "John Travolta", "1234"));
-			userService.saveUser(new User(null, "Will Smith", "1234"));
-			userService.saveUser(new User(null, "Jim Carry", "1234"));
-			userService.saveUser(new User(null, "Arnold Schwarzenegger", "1234"));
-
-			userService.addRoleToUser("John Travolta", "ROLE_USER");
-			userService.addRoleToUser("John Travolta", "ROLE_MANAGER");
-			userService.addRoleToUser("Will Smith", "ROLE_MANAGER");
-			userService.addRoleToUser("Jim Carry", "ROLE_ADMIN");
-			userService.addRoleToUser("Arnold Schwarzenegger", "ROLE_SUPER_ADMIN");
-			userService.addRoleToUser("Arnold Schwarzenegger", "ROLE_ADMIN");
-			userService.addRoleToUser("Arnold Schwarzenegger", "ROLE_USER");
+			User arnold = new User(null, "Arnold Schwarzenegger", "1234");
+			if (userService.getUser(arnold.getUsername()) == null) {
+				userService.saveUser(arnold);
+				userService.addRoleToUser(arnold.getUsername(), PLAYER);
+				userService.addRoleToUser(arnold.getUsername(), ADMIN);
+			}
 		};
 	}
 }
