@@ -5,11 +5,11 @@ import javax.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = BuildableLockedValidator.class)
+@Constraint(validatedBy = BuildableBuildEnoughFundsValidator.class)
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface BuildableLockedConstraint {
-    String message() default "Your level is to low to build this building";
+public @interface BuildableBuildEnoughFundsConstraint {
+    String message() default "You don't have enough funds to build this";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

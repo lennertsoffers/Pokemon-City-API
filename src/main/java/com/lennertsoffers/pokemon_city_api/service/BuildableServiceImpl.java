@@ -50,6 +50,7 @@ public class BuildableServiceImpl implements BuildableService {
 
         User user = buildable.getCity().getUser();
         user.addXp(buildable.getXpWhenFinished());
+        user.removeMoney(buildable.getPrice());
 
         return this.buildableRepository.save(buildable);
     }

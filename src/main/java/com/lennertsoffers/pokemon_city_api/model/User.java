@@ -45,6 +45,10 @@ public class User {
         this.money += amount;
     }
 
+    public void removeMoney(int amount) {
+        this.money -= amount;
+    }
+
     public void addXp(int amount) {
         this.xp += amount;
     }

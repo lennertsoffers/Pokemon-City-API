@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum HouseType implements BuildableType {
-    SMALL_HOUSE("Small House", -2, 100, 200, 0, 5, 5, 2, 50, 1);
+    SMALL_HOUSE("Small House", -2, 100, 1, 0, 5, 5, 2, 50, 1);
 
     private final String name;
     private final int satisfactionModifier;
