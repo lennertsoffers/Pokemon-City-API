@@ -59,6 +59,16 @@ public class BuildableServiceImpl implements BuildableService {
     }
 
     @Override
+    public Boolean demolish(Long id) {
+        if (buildableRepository.existsById(id)) {
+            buildableRepository.deleteById(id);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
     public boolean belongsToUser(Long id) {
         Optional<Buildable> optionalBuildable = buildableRepository.findById(id);
 

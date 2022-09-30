@@ -6,6 +6,7 @@ import com.lennertsoffers.pokemon_city_api.model.dto.BuildableDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableMoveDto;
 import com.lennertsoffers.pokemon_city_api.service.BuildableService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,13 +34,15 @@ public class BuildableController {
     }
 
     @PutMapping("/move/{id}")
-    @PostAuthorize("@buildableServiceImpl.belongsToUser(#id)")
+    @PreAuthorize("@buildableServiceImpl.belongsToUser(#id)")
     public ResponseEntity<Buildable> move(@P("id") @PathVariable("id") Long id , @Valid @RequestBody BuildableMoveDto buildableMoveDto) {
         return ResponseEntity.ok().body(buildableService.move(id, buildableMoveDto));
     }
-//
-//    @DeleteMapping("/demolish/{buildableId}")
-//    public ResponseEntity<Boolean> demolish(@PathVariable("buildableId") Long id) {
-//
-//    }
+
+    @DeleteMapping("/demolish/{id}")
+    @PreAuthorize("@buildableServiceImpl.belongsToUser(#id)")
+    public ResponseEntity<Boolean> demolish(@P("id") @PathVariable("id") Long id) {
+        if (buildableService.demolish(id)) return ResponseEntity.ok().body(true);
+        return ResponseEntity.notFound().build();
+    }
 }
