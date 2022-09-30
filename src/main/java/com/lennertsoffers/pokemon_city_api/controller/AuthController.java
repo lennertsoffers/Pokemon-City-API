@@ -3,9 +3,12 @@ package com.lennertsoffers.pokemon_city_api.controller;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lennertsoffers.pokemon_city_api.exception.AuthFilterExceptionHandler;
+import com.lennertsoffers.pokemon_city_api.model.City;
 import com.lennertsoffers.pokemon_city_api.model.Role;
 import com.lennertsoffers.pokemon_city_api.model.User;
 import com.lennertsoffers.pokemon_city_api.model.dto.UserCreationDto;
+import com.lennertsoffers.pokemon_city_api.repository.CityRepository;
+import com.lennertsoffers.pokemon_city_api.service.CityService;
 import com.lennertsoffers.pokemon_city_api.service.UserService;
 import com.lennertsoffers.pokemon_city_api.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +33,7 @@ import static com.lennertsoffers.pokemon_city_api.security.RoleType.*;
 @RequiredArgsConstructor
 public class AuthController {
     private final UserService userService;
+    private final CityService cityService;
 
     @GetMapping("/refreshToken")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -64,7 +69,13 @@ public class AuthController {
     @PostMapping("/register")
     public void register(@Valid @RequestBody UserCreationDto userCreationDto, HttpServletRequest request, HttpServletResponse response) throws IOException {
         User user = new User(userCreationDto.username(), userCreationDto.password());
+        City city = new City();
+        city.setName(userCreationDto.username() + " city");
+        city.setDateCreated(LocalDate.now());
+        city.setUser(user);
+
         userService.saveUser(user);
+        cityService.save(city);
 
         user = userService.addRoleToUser(userCreationDto.username(), PLAYER);
 

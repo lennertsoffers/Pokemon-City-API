@@ -1,5 +1,6 @@
 package com.lennertsoffers.pokemon_city_api.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,12 +17,13 @@ public class Citizen {
     private Long id;
     private String name;
 
-    @Embedded
+    @OneToOne(mappedBy = "citizen")
     private SpecialisationData specialisationData;
 
-    @Embedded
+    @OneToOne(mappedBy = "citizen")
     private SpecialisationData maxSpecialisationData;
 
     @ManyToOne
+    @JsonBackReference
     private City city;
 }

@@ -1,5 +1,7 @@
-﻿package com.lennertsoffers.pokemon_city_api.model;
+package com.lennertsoffers.pokemon_city_api.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.lennertsoffers.pokemon_city_api.model.type.BuildableTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +10,6 @@ import javax.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "buildable_type", discriminatorType = DiscriminatorType.STRING)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,7 +21,11 @@ public abstract class Buildable {
     @Embedded
     private Location location;
 
+    @Enumerated
+    private BuildableTypeEnum buildableTypeEnum;
+
     @ManyToOne
+    @JsonBackReference
     private City city;
 
     public int getX() {

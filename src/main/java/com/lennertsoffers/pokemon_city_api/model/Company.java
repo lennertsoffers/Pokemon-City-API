@@ -1,6 +1,10 @@
 package com.lennertsoffers.pokemon_city_api.model;
 
+import com.lennertsoffers.pokemon_city_api.model.type.BuildableTypeEnum;
 import com.lennertsoffers.pokemon_city_api.model.type.CompanyType;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -8,9 +12,20 @@ import javax.persistence.Enumerated;
 
 @Entity
 @DiscriminatorValue("Company")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Company extends IncomeBuilding {
+    public Company(Location location, CompanyType companyType) {
+        this.setLocation(location);
+        this.setCompanyType(companyType);
+    }
+
     @Enumerated
     private CompanyType companyType;
+
+    @Enumerated
+    private BuildableTypeEnum buildableTypeEnum = BuildableTypeEnum.COMPANY;
 
     @Override
     public int collect() {

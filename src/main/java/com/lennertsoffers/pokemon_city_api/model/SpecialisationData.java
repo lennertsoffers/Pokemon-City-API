@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Embeddable
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,4 +19,7 @@ public class SpecialisationData {
 
     @Enumerated
     private SpecialisationType specialisationType;
+
+    @OneToOne
+    private Citizen citizen;
 }

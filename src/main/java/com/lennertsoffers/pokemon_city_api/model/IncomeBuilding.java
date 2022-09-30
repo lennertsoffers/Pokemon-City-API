@@ -3,9 +3,12 @@ package com.lennertsoffers.pokemon_city_api.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Entity;
+import javax.persistence.Temporal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+@Entity
 @Getter
 @Setter
 public abstract class IncomeBuilding extends Buildable {

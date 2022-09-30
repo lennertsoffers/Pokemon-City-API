@@ -6,7 +6,9 @@ import com.lennertsoffers.pokemon_city_api.repository.RoleRepository;
 import com.lennertsoffers.pokemon_city_api.repository.UserRepository;
 import com.lennertsoffers.pokemon_city_api.security.RoleType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -56,6 +58,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User getUser(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public User getAuthUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        return getUser(username);
     }
 
     @Override
