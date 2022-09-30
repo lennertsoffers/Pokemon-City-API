@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BuildableBuildConstraint {
-    String message() default "This is not a valid buildable type";
+    String message() default "You cannot build on this location";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

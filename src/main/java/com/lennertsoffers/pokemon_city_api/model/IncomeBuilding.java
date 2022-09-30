@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.Temporal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -14,7 +13,7 @@ import java.time.LocalDateTime;
 public abstract class IncomeBuilding extends Buildable {
     private LocalDateTime lastCollected;
 
-    public int collect() {
+    public Integer collect() {
         this.setLastCollected(LocalDateTime.now());
         return 0;
     }
@@ -23,7 +22,7 @@ public abstract class IncomeBuilding extends Buildable {
         LocalDateTime lastCollected = this.getLastCollected();
         LocalDateTime now = LocalDateTime.now();
 
-        Duration duration = Duration.between(now, lastCollected);
+        Duration duration = Duration.between(lastCollected, now);
 
         return duration.toMinutes();
     }

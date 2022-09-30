@@ -1,6 +1,7 @@
 package com.lennertsoffers.pokemon_city_api.model.dto;
 
 import com.lennertsoffers.pokemon_city_api.model.Location;
+import com.lennertsoffers.pokemon_city_api.model.type.BuildableTypeEnum;
 import com.lennertsoffers.pokemon_city_api.model.type.HouseType;
 import lombok.Getter;
 
@@ -13,8 +14,8 @@ public class HouseDto extends IncomeBuildingDto {
     private final int maxRent;
     private final int rentPerMinute;
 
-    public HouseDto(Long id, String name, int satisfactionModifier, int xpWhenFinished, int price, int unlockedAtLevel, int height, int width, Location location, LocalDateTime lastCollected, HouseType houseType, int numberOfCitizens, int rentPerMinute, int maxRent) {
-        super(id, name, satisfactionModifier, xpWhenFinished, price, unlockedAtLevel, height, width, location, lastCollected);
+    public HouseDto(Long id, String name, int satisfactionModifier, int xpWhenFinished, int price, int unlockedAtLevel, int height, int width, Location location, BuildableTypeEnum buildableTypeEnum, LocalDateTime lastCollected, HouseType houseType, int numberOfCitizens, int rentPerMinute, int maxRent) {
+        super(id, name, satisfactionModifier, xpWhenFinished, price, unlockedAtLevel, height, width, location, buildableTypeEnum, lastCollected);
         this.houseType = houseType;
         this.numberOfCitizens = numberOfCitizens;
         this.maxRent = maxRent;

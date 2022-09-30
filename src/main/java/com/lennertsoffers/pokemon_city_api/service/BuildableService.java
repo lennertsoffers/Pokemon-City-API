@@ -12,5 +12,6 @@ public interface BuildableService {
     Buildable getById(Long id);
     Buildable build(BuildableBuildDto buildableBuildDto);
     Buildable move(Long id, BuildableMoveDto buildableMoveDto);
+    Boolean demolish(Long id);
     boolean belongsToUser(Long id);
 }
