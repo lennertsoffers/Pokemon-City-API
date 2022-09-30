@@ -7,6 +7,7 @@ import com.lennertsoffers.pokemon_city_api.model.dto.BuildableBuildDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableMoveDto;
 import com.lennertsoffers.pokemon_city_api.model.mapper.BuildableMapper;
+import com.lennertsoffers.pokemon_city_api.model.type.*;
 import com.lennertsoffers.pokemon_city_api.repository.BuildableRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -82,5 +83,14 @@ public class BuildableServiceImpl implements BuildableService {
 
         Buildable buildable = optionalBuildable.get();
         return Objects.equals(buildable.getCity().getUser().getId(), userService.getAuthUser().getId());
+    }
+
+    @Override
+    public BuildableType getBuildableType(String buildableType, String name) {
+        return switch (BuildableTypeEnum.valueOf(buildableType)) {
+            case HOUSE -> HouseType.valueOf(name);
+            case COMPANY -> CompanyType.valueOf(name);
+            case DECORATION -> DecorationType.valueOf(name);
+        };
     }
 }
