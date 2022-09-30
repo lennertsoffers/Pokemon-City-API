@@ -1,10 +1,12 @@
 package com.lennertsoffers.pokemon_city_api.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.stream.Stream;
 
 @Entity
 @Data
@@ -21,6 +23,7 @@ public class Statistics {
     private int moneyCollected = 0;
 
     @OneToOne
+    @JsonBackReference
     private User user;
 
     public int getProfit() {
@@ -33,15 +36,8 @@ public class Statistics {
                 .getBuildables()
                 .stream()
                 .filter(buildable -> buildable instanceof IncomeBuilding)
-                .mapToInt(incomeBuilding -> {
-                    if (incomeBuilding instanceof House house) {
-                        return house.getRentPerMinute();
-                    } else if (incomeBuilding instanceof Company company) {
-                        return company.getProfitPerMinute();
-                    }
-
-                    return 0;
-                })
+                .map(IncomeBuilding.class::cast)
+                .mapToInt(IncomeBuilding::getIncomePerMinute)
                 .sum();
     }
 }

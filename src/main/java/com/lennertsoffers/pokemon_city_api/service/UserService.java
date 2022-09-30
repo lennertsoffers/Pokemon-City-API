@@ -1,6 +1,7 @@
 package com.lennertsoffers.pokemon_city_api.service;
 
 import com.lennertsoffers.pokemon_city_api.model.User;
+import com.lennertsoffers.pokemon_city_api.model.dto.UserDataDto;
 import com.lennertsoffers.pokemon_city_api.security.RoleType;
 import org.springframework.stereotype.Service;
 
@@ -13,5 +14,6 @@ public interface UserService {
 
     User getUser(String username);
     User getAuthUser();
+    UserDataDto getUserData();
     List<User> getUsers();
 }
