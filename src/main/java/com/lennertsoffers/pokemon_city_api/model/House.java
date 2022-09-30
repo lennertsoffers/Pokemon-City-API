@@ -28,16 +28,17 @@ public class House extends IncomeBuilding {
     private BuildableTypeEnum buildableTypeEnum = BuildableTypeEnum.HOUSE;
 
     @Override
-    public int collect() {
+    public Integer collect() {
         long rentMinutes = this.getRentMinutes();
-        super.collect();
-
         int rent = (int) (rentMinutes * this.getRentPerMinute());
-        if (rent > this.getMaxRent()) {
-            rent = this.getMaxRent();
-        }
+
+        if (rent < this.getMaxRent() / 2) return null;
+        if (rent > this.getMaxRent()) rent = this.getMaxRent();
+
+        rent = (int) Math.round(rent * this.getCity().getSatisfaction());
 
         this.getCity().getUser().addMoney(rent);
+        super.collect();
 
         return rent;
     }

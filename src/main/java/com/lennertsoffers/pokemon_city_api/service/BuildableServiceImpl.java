@@ -10,11 +10,13 @@ import com.lennertsoffers.pokemon_city_api.repository.BuildableRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class BuildableServiceImpl implements BuildableService {
     private final BuildableRepository buildableRepository;

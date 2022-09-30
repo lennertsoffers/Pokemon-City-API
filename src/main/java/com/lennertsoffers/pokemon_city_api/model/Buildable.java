@@ -21,7 +21,7 @@ public abstract class Buildable {
     @Embedded
     private Location location;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private BuildableTypeEnum buildableTypeEnum;
 
     @ManyToOne

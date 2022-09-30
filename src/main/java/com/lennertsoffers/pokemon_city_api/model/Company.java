@@ -28,12 +28,13 @@ public class Company extends IncomeBuilding {
     private BuildableTypeEnum buildableTypeEnum = BuildableTypeEnum.COMPANY;
 
     @Override
-    public int collect() {
+    public Integer collect() {
         long rentMinutes = this.getRentMinutes();
-        super.collect();
 
-        int rent = (int) (rentMinutes * this.getProfitPerMinute());
+        int rent = (int) Math.round(rentMinutes * this.getProfitPerMinute() * this.getCity().getAmountOfCitizens() * this.getCity().getSatisfaction());
+
         this.getCity().getUser().addMoney(rent);
+        super.collect();
 
         return rent;
     }

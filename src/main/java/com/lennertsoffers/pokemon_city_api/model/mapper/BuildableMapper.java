@@ -69,6 +69,7 @@ public class BuildableMapper {
                 house.getHeight(),
                 house.getWidth(),
                 house.getLocation(),
+                house.getBuildableTypeEnum(),
                 house.getLastCollected(),
                 house.getHouseType(),
                 house.getNumberOfCitizens(),
@@ -88,6 +89,7 @@ public class BuildableMapper {
                 company.getHeight(),
                 company.getWidth(),
                 company.getLocation(),
+                company.getBuildableTypeEnum(),
                 company.getLastCollected(),
                 company.getCompanyType(),
                 company.getProfitPerMinute()
@@ -105,6 +107,7 @@ public class BuildableMapper {
                 decoration.getHeight(),
                 decoration.getWidth(),
                 decoration.getLocation(),
+                decoration.getBuildableTypeEnum(),
                 decoration.getDecorationType()
         );
     }
