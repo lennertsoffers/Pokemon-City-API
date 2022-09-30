@@ -63,7 +63,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public void register(@Valid @RequestBody UserCreationDto userCreationDto, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        User user = new User(null, userCreationDto.username(), userCreationDto.password());
+        User user = new User(userCreationDto.username(), userCreationDto.password());
         userService.saveUser(user);
 
         user = userService.addRoleToUser(userCreationDto.username(), PLAYER);
