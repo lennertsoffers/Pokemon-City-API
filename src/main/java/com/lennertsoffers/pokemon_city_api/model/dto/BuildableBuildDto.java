@@ -5,7 +5,7 @@ import com.lennertsoffers.pokemon_city_api.validation.BuildableTypeConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public record BuildableCreationDto(
+public record BuildableBuildDto(
         @NotBlank String name,
         @NotNull int x,
         @NotNull int y,

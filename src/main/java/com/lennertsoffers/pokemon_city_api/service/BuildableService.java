@@ -1,12 +1,16 @@
 package com.lennertsoffers.pokemon_city_api.service;
 
 import com.lennertsoffers.pokemon_city_api.model.Buildable;
-import com.lennertsoffers.pokemon_city_api.model.dto.BuildableCreationDto;
+import com.lennertsoffers.pokemon_city_api.model.dto.BuildableBuildDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableDto;
+import com.lennertsoffers.pokemon_city_api.model.dto.BuildableMoveDto;
 
 import java.util.List;
 
 public interface BuildableService {
     List<BuildableDto> getBuildableDtos();
-    Buildable build(BuildableCreationDto buildableCreationDto);
+    Buildable getById(Long id);
+    Buildable build(BuildableBuildDto buildableBuildDto);
+    Buildable move(Long id, BuildableMoveDto buildableMoveDto);
+    boolean belongsToUser(Long id);
 }

@@ -28,14 +28,6 @@ public abstract class Buildable {
     @JsonBackReference
     private City city;
 
-    public int getX() {
-        return location.getX();
-    }
-
-    public int getY() {
-        return location.getY();
-    }
-
     public abstract String getName();
     public abstract int getSatisfactionModifier();
     public abstract int getXpWhenFinished();
