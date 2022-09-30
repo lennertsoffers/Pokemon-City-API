@@ -50,6 +50,7 @@ public class BuildableServiceImpl implements BuildableService {
 
         User user = buildable.getCity().getUser();
         user.addXp(buildable.getXpWhenFinished());
+        user.removeMoney(buildable.getPrice());
 
         return this.buildableRepository.save(buildable);
     }
@@ -67,12 +68,17 @@ public class BuildableServiceImpl implements BuildableService {
 
     @Override
     public Boolean demolish(Long id) {
-        if (buildableRepository.existsById(id)) {
-            buildableRepository.deleteById(id);
-            return true;
-        }
+        Optional<Buildable> optionalBuildable = buildableRepository.findById(id);
 
-        return false;
+        if (optionalBuildable.isEmpty()) return false;
+
+        Buildable buildable = optionalBuildable.get();
+        User user = buildable.getCity().getUser();
+
+        user.addMoney(buildable.getPrice() / 2);
+        buildableRepository.deleteById(id);
+
+        return true;
     }
 
     @Override
