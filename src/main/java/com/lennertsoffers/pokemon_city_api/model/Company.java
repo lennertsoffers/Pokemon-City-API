@@ -29,14 +29,20 @@ public class Company extends IncomeBuilding {
 
     @Override
     public Integer collect() {
-        long rentMinutes = this.getRentMinutes();
+        long minutesSinceLastCollection = this.getMinutesSinceLastCollection();
+        int incomePerMinute = this.getIncomePerMinute();
 
-        int rent = (int) Math.round(rentMinutes * this.getProfitPerMinute() * this.getCity().getAmountOfCitizens() * this.getCity().getSatisfaction());
+        int profit = (int) (minutesSinceLastCollection * incomePerMinute);
 
-        this.getCity().getUser().addMoney(rent);
+        this.getCity().getUser().addMoney(profit);
         super.collect();
 
-        return rent;
+        return profit;
+    }
+
+    @Override
+    public int getIncomePerMinute() {
+        return (int) Math.round(this.getProfitPerMinute() * this.getCity().getAmountOfCitizens() * this.getCity().getSatisfaction());
     }
 
     @Override

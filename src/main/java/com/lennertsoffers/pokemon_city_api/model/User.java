@@ -22,7 +22,6 @@ public class User {
     private Long id;
     private String username;
     private String password;
-    private int level = 1;
     private int xp = 0;
     private int money = 0;
 
@@ -34,6 +33,7 @@ public class User {
     private City city;
 
     @OneToOne(mappedBy = "user")
+    @JsonManagedReference
     private Statistics statistics;
 
     public User(String username, String password) {
@@ -43,5 +43,13 @@ public class User {
 
     public void addMoney(int amount) {
         this.money += amount;
+    }
+
+    public void addXp(int amount) {
+        this.xp += amount;
+    }
+
+    public int getLevel() {
+        return (int) Math.floor(Math.pow((this.getXp() / 100F), (1 / 1.2)));
     }
 }

@@ -2,6 +2,8 @@ package com.lennertsoffers.pokemon_city_api.service;
 
 import com.lennertsoffers.pokemon_city_api.model.Role;
 import com.lennertsoffers.pokemon_city_api.model.User;
+import com.lennertsoffers.pokemon_city_api.model.dto.UserDataDto;
+import com.lennertsoffers.pokemon_city_api.model.mapper.UserMapper;
 import com.lennertsoffers.pokemon_city_api.repository.RoleRepository;
 import com.lennertsoffers.pokemon_city_api.repository.UserRepository;
 import com.lennertsoffers.pokemon_city_api.security.RoleType;
@@ -25,6 +27,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -66,6 +69,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         String username = authentication.getName();
 
         return getUser(username);
+    }
+
+    @Override
+    public UserDataDto getUserData() {
+        return userMapper.toUserDataDto(this.getAuthUser());
     }
 
     @Override

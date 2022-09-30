@@ -2,6 +2,7 @@ package com.lennertsoffers.pokemon_city_api.service;
 
 import com.lennertsoffers.pokemon_city_api.model.Buildable;
 import com.lennertsoffers.pokemon_city_api.model.Location;
+import com.lennertsoffers.pokemon_city_api.model.User;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableBuildDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableMoveDto;
@@ -45,6 +46,9 @@ public class BuildableServiceImpl implements BuildableService {
     @Override
     public Buildable build(BuildableBuildDto buildableBuildDto) {
         Buildable buildable = buildableMapper.toBuildable(buildableBuildDto);
+
+        User user = buildable.getCity().getUser();
+        user.addXp(buildable.getXpWhenFinished());
 
         return this.buildableRepository.save(buildable);
     }

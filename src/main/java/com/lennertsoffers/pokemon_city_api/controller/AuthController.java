@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lennertsoffers.pokemon_city_api.exception.AuthFilterExceptionHandler;
 import com.lennertsoffers.pokemon_city_api.model.City;
 import com.lennertsoffers.pokemon_city_api.model.Role;
+import com.lennertsoffers.pokemon_city_api.model.Statistics;
 import com.lennertsoffers.pokemon_city_api.model.User;
 import com.lennertsoffers.pokemon_city_api.model.dto.UserCreationDto;
 import com.lennertsoffers.pokemon_city_api.service.CityService;
+import com.lennertsoffers.pokemon_city_api.service.StatisticsService;
 import com.lennertsoffers.pokemon_city_api.service.UserService;
 import com.lennertsoffers.pokemon_city_api.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,7 @@ import static com.lennertsoffers.pokemon_city_api.security.RoleType.*;
 public class AuthController {
     private final UserService userService;
     private final CityService cityService;
+    private final StatisticsService statisticsService;
 
     @GetMapping("/refreshToken")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -68,12 +71,15 @@ public class AuthController {
     @PostMapping("/register")
     public void register(@Valid @RequestBody UserCreationDto userCreationDto, HttpServletRequest request, HttpServletResponse response) throws IOException {
         User user = new User(userCreationDto.username(), userCreationDto.password());
+        Statistics statistics = new Statistics();
+        statistics.setUser(user);
         City city = new City();
         city.setName(userCreationDto.username() + " city");
         city.setDateCreated(LocalDate.now());
         city.setUser(user);
 
         userService.saveUser(user);
+        statisticsService.saveStatistics(statistics);
         cityService.save(city);
 
         user = userService.addRoleToUser(userCreationDto.username(), PLAYER);

@@ -18,7 +18,7 @@ public abstract class IncomeBuilding extends Buildable {
         return 0;
     }
 
-    protected long getRentMinutes() {
+    protected long getMinutesSinceLastCollection() {
         LocalDateTime lastCollected = this.getLastCollected();
         LocalDateTime now = LocalDateTime.now();
 
@@ -26,4 +26,6 @@ public abstract class IncomeBuilding extends Buildable {
 
         return duration.toMinutes();
     }
+
+    public abstract int getIncomePerMinute();
 }
