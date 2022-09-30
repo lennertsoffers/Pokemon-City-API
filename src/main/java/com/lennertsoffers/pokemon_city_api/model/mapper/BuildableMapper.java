@@ -17,14 +17,14 @@ import java.time.LocalDateTime;
 public class BuildableMapper {
     private final UserService userService;
 
-    public Buildable toBuildable(BuildableCreationDto buildableCreationDto) {
-        BuildableTypeEnum buildableType = BuildableTypeEnum.valueOf(buildableCreationDto.buildableType());
-        Location location = new Location(buildableCreationDto.x(), buildableCreationDto.y());
+    public Buildable toBuildable(BuildableBuildDto buildableBuildDto) {
+        BuildableTypeEnum buildableType = BuildableTypeEnum.valueOf(buildableBuildDto.buildableType());
+        Location location = new Location(buildableBuildDto.x(), buildableBuildDto.y());
         City city = userService.getAuthUser().getCity();
 
         switch (buildableType) {
             case HOUSE -> {
-                HouseType houseType = HouseType.valueOf(buildableCreationDto.name());
+                HouseType houseType = HouseType.valueOf(buildableBuildDto.name());
                 House house = new House(houseType, location);
                 house.setLastCollected(LocalDateTime.now());
                 house.setCity(city);
@@ -32,7 +32,7 @@ public class BuildableMapper {
             }
 
             case COMPANY -> {
-                CompanyType companyType = CompanyType.valueOf(buildableCreationDto.name());
+                CompanyType companyType = CompanyType.valueOf(buildableBuildDto.name());
                 Company company = new Company(location, companyType);
                 company.setLastCollected(LocalDateTime.now());
                 company.setCity(city);
@@ -40,7 +40,7 @@ public class BuildableMapper {
             }
 
             case DECORATION -> {
-                DecorationType decorationType = DecorationType.valueOf(buildableCreationDto.name());
+                DecorationType decorationType = DecorationType.valueOf(buildableBuildDto.name());
                 Decoration decoration = new Decoration(location, decorationType);
                 decoration.setCity(city);
                 return decoration;

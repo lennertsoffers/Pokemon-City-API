@@ -1,13 +1,15 @@
 package com.lennertsoffers.pokemon_city_api.controller;
 
 import com.lennertsoffers.pokemon_city_api.model.Buildable;
-import com.lennertsoffers.pokemon_city_api.model.User;
-import com.lennertsoffers.pokemon_city_api.model.dto.BuildableCreationDto;
+import com.lennertsoffers.pokemon_city_api.model.dto.BuildableBuildDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableDto;
+import com.lennertsoffers.pokemon_city_api.model.dto.BuildableMoveDto;
 import com.lennertsoffers.pokemon_city_api.service.BuildableService;
-import com.lennertsoffers.pokemon_city_api.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,7 +28,18 @@ public class BuildableController {
     }
 
     @PostMapping("/build")
-    public ResponseEntity<Buildable> build(@Valid @RequestBody BuildableCreationDto buildableCreationDto) {
-        return ResponseEntity.created(URI.create("/api/buildables/build")).body(buildableService.build(buildableCreationDto));
+    public ResponseEntity<Buildable> build(@Valid @RequestBody BuildableBuildDto buildableBuildDto) {
+        return ResponseEntity.created(URI.create("/api/buildables/build")).body(buildableService.build(buildableBuildDto));
     }
+
+    @PutMapping("/move/{id}")
+    @PostAuthorize("@buildableServiceImpl.belongsToUser(#id)")
+    public ResponseEntity<Buildable> move(@P("id") @PathVariable("id") Long id , @Valid @RequestBody BuildableMoveDto buildableMoveDto) {
+        return ResponseEntity.ok().body(buildableService.move(id, buildableMoveDto));
+    }
+//
+//    @DeleteMapping("/demolish/{buildableId}")
+//    public ResponseEntity<Boolean> demolish(@PathVariable("buildableId") Long id) {
+//
+//    }
 }

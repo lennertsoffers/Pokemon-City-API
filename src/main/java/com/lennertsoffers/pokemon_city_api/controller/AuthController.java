@@ -12,6 +12,8 @@ import com.lennertsoffers.pokemon_city_api.service.CityService;
 import com.lennertsoffers.pokemon_city_api.service.UserService;
 import com.lennertsoffers.pokemon_city_api.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
