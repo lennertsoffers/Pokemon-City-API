@@ -20,13 +20,13 @@ public class PokemonCityApiApplication {
 	@Bean
 	public CommandLineRunner run(UserService userService) {
 		return args -> {
-			User john = new User(null, "John Travolta", "1234");
+			User john = new User("John Travolta", "1234");
 			if (userService.getUser(john.getUsername()) == null) {
 				userService.saveUser(john);
 				userService.addRoleToUser(john.getUsername(), PLAYER);
 			}
 
-			User arnold = new User(null, "Arnold Schwarzenegger", "1234");
+			User arnold = new User("Arnold Schwarzenegger", "1234");
 			if (userService.getUser(arnold.getUsername()) == null) {
 				userService.saveUser(arnold);
 				userService.addRoleToUser(arnold.getUsername(), PLAYER);

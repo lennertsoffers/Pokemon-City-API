@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class JwtTokenUtils {
-    public static int DEFAULT_JWT_ALIVE_TIME = TimeUtils.minToMilliseconds(1);
+    public static int DEFAULT_JWT_ALIVE_TIME = TimeUtils.minToMilliseconds(30);
     public static int DEFAULT_REFRESH_ALIVE_TIME = TimeUtils.daysToMilliseconds(15);
 
     private static final String KEY = "/!JC&!GvnPa]5P-@6u/X%_WmtP27bGDn/9$j)+JA#2$,aVcf!25hk7*,5!qrHxVXaQ(yc]Kaz{!]JRV&";
