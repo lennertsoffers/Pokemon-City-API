@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.*;
 
-import static com.lennertsoffers.pokemon_city_api.model.type.SpecialisationType.*;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -38,21 +36,12 @@ public class CitizenServiceImpl implements CitizenService {
     @Override
     public Citizen spawnCitizen(City city) {
         Random random = new Random();
-        Map<SpecialisationType, Integer> specialisationData = this.generateSpecialisationData();
-        Map<SpecialisationType, Integer> maxSpecialisationData = new HashMap<>();
-        for (SpecialisationType specialisationType : SpecialisationType.values()) {
-            int value = (int) (100 + Math.round(random.nextGaussian() * 20));
-            value = Math.max(50, value);
-            value = Math.min(150, value);
-
-            maxSpecialisationData.put(specialisationType, value);
-        }
 
         Citizen citizen = new Citizen();
         citizen.setName(DEFAULT_NAMES.get(random.nextInt(0, DEFAULT_NAMES.size())));
         citizen.setCity(city);
-        citizen.setSpecialisationData(specialisationData);
-        citizen.setMaxSpecialisationData(maxSpecialisationData);
+        citizen.setSpecialisationData(this.generateSpecialisationDataValues());
+        citizen.setMaxSpecialisationData(this.generateSpecialisationDataMax());
 
         return citizenRepository.save(citizen);
     }
@@ -90,12 +79,31 @@ public class CitizenServiceImpl implements CitizenService {
         return citizen.get().getCity().getUser().getId().equals(userService.getAuthUser().getId());
     }
 
-    private Map<SpecialisationType, Integer> generateSpecialisationData() {
-        return Map.of(
-                COOKING, 0,
-                SOCIAL, 0,
-                SERVICE, 0,
-                SELLING, 0
-        );
+    private Map<SpecialisationType, Integer> generateSpecialisationDataValues() {
+        Random random = new Random();
+        Map<SpecialisationType, Integer> specialisationDataValues = new HashMap<>();
+
+        for (SpecialisationType specialisationType : SpecialisationType.values()) {
+            int value = (int) Math.min(Math.abs(Math.round(random.nextGaussian() * 15 + 1)), 50);
+
+            specialisationDataValues.put(specialisationType, value);
+        }
+
+        return specialisationDataValues;
+    }
+
+    private Map<SpecialisationType, Integer> generateSpecialisationDataMax() {
+        Random random = new Random();
+        Map<SpecialisationType, Integer> maxSpecialisationData = new HashMap<>();
+
+        for (SpecialisationType specialisationType : SpecialisationType.values()) {
+            int value = (int) (100 + Math.round(random.nextGaussian() * 20));
+            value = Math.max(50, value);
+            value = Math.min(150, value);
+
+            maxSpecialisationData.put(specialisationType, value);
+        }
+
+        return maxSpecialisationData;
     }
 }
