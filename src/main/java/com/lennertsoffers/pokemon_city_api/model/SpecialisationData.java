@@ -17,7 +17,7 @@ public class SpecialisationData {
     private Long id;
     private int value;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private SpecialisationType specialisationType;
 
     @OneToOne

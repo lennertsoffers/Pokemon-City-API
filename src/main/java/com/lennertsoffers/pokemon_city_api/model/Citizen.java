@@ -40,4 +40,23 @@ public class Citizen {
     @ManyToOne
     @JsonBackReference
     private Company company;
+
+    public boolean assignToCompany(Company company) {
+        if (!company.isAssignable()) return false;
+
+        this.setCompany(company);
+        this.setAssignedSince(LocalDateTime.now());
+        company.assign(this);
+        return true;
+    }
+
+    public boolean unEmploy() {
+        if (this.getCompany() == null) return false;
+
+        this.getCompany().unAssing(this.getId());
+        this.setAssignedSince(null);
+        this.setCompany(null);
+
+        return true;
+    }
 }

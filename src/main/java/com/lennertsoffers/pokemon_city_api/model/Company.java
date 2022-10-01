@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,17 +93,15 @@ public class Company extends IncomeBuilding {
         return this.companyType.getMaxAssignedCitizens();
     }
 
-    public boolean assignCitizen(Citizen citizen) {
-        if (this.assignedCitizens.size() >= this.getMaxAssignedCitizens()) return false;
-
-        this.assignedCitizens.add(citizen);
-        citizen.setAssignedSince(LocalDateTime.now());
-        citizen.setCompany(this);
-
-        return true;
+    public boolean isAssignable() {
+        return this.assignedCitizens.size() < this.getMaxAssignedCitizens();
     }
 
-    public void unAssignCitizen(Long id) {
-        this.assignedCitizens.removeIf(citizen -> citizen.getId().equals(id));
+    protected void assign(Citizen citizen) {
+        this.getAssignedCitizens().add(citizen);
+    }
+
+    protected void unAssing(Long citizenId) {
+        this.getAssignedCitizens().removeIf(citizen -> citizen.getId().equals(citizenId));
     }
 }

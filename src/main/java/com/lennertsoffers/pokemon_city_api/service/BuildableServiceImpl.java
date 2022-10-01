@@ -1,6 +1,7 @@
 package com.lennertsoffers.pokemon_city_api.service;
 
 import com.lennertsoffers.pokemon_city_api.model.Buildable;
+import com.lennertsoffers.pokemon_city_api.model.House;
 import com.lennertsoffers.pokemon_city_api.model.Location;
 import com.lennertsoffers.pokemon_city_api.model.User;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableBuildDto;
@@ -23,6 +24,7 @@ import java.util.Optional;
 public class BuildableServiceImpl implements BuildableService {
     private final BuildableRepository buildableRepository;
     private final UserService userService;
+    private final CitizenService citizenService;
     private final BuildableMapper buildableMapper;
 
     @Override
@@ -51,6 +53,12 @@ public class BuildableServiceImpl implements BuildableService {
         User user = buildable.getCity().getUser();
         user.addXp(buildable.getXpWhenFinished());
         user.removeMoney(buildable.getPrice());
+
+        if (buildable instanceof House house) {
+            for (int i = 0; i < house.getNumberOfCitizens(); i++) {
+                citizenService.spawnCitizen(user.getCity());
+            }
+        }
 
         return this.buildableRepository.save(buildable);
     }
