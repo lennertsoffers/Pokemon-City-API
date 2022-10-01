@@ -1,14 +1,16 @@
 package com.lennertsoffers.pokemon_city_api.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lennertsoffers.pokemon_city_api.model.type.BuildableTypeEnum;
 import com.lennertsoffers.pokemon_city_api.model.type.CompanyType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("Company")
@@ -26,6 +28,10 @@ public class Company extends IncomeBuilding {
 
     @Enumerated
     private BuildableTypeEnum buildableTypeEnum = BuildableTypeEnum.COMPANY;
+
+    @OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<Citizen> assignedCitizens = new ArrayList<>();
 
     @Override
     public Integer collect() {
@@ -84,8 +90,21 @@ public class Company extends IncomeBuilding {
         return this.companyType.getProfitPerMinute();
     }
 
-    private int getTotalProfit() {
-        // TODO - Implement method
-        return 0;
+    public int getMaxAssignedCitizens() {
+        return this.companyType.getMaxAssignedCitizens();
+    }
+
+    public boolean assignCitizen(Citizen citizen) {
+        if (this.assignedCitizens.size() >= this.getMaxAssignedCitizens()) return false;
+
+        this.assignedCitizens.add(citizen);
+        citizen.setAssignedSince(LocalDateTime.now());
+        citizen.setCompany(this);
+
+        return true;
+    }
+
+    public void unAssignCitizen(Long id) {
+        this.assignedCitizens.removeIf(citizen -> citizen.getId().equals(id));
     }
 }
