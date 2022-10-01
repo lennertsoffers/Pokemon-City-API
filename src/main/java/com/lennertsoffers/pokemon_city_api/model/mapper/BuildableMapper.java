@@ -92,7 +92,10 @@ public class BuildableMapper {
                 company.getBuildableTypeEnum(),
                 company.getLastCollected(),
                 company.getCompanyType(),
-                company.getProfitPerMinute()
+                company.getProfitPerMinute(),
+                company.getEmployeeMultiplier(),
+                company.getMaxAssignedCitizens(),
+                company.getSpecialisationType()
         );
     }
 

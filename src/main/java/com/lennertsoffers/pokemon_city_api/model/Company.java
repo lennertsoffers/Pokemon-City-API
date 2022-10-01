@@ -3,6 +3,7 @@ package com.lennertsoffers.pokemon_city_api.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lennertsoffers.pokemon_city_api.model.type.BuildableTypeEnum;
 import com.lennertsoffers.pokemon_city_api.model.type.CompanyType;
+import com.lennertsoffers.pokemon_city_api.model.type.SpecialisationType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalDouble;
 
 @Entity
 @DiscriminatorValue("Company")
@@ -47,7 +49,12 @@ public class Company extends IncomeBuilding {
 
     @Override
     public int getIncomePerMinute() {
-        return (int) Math.round(this.getProfitPerMinute() * this.getCity().getAmountOfCitizens() * this.getCity().getSatisfaction());
+        return (int) Math.round(
+                this.getProfitPerMinute() *
+                this.getCity().getAmountOfCitizens() *
+                this.getCity().getSatisfaction() *
+                (this.getEmployeeMultiplier() / 100f)
+        );
     }
 
     @Override
@@ -91,6 +98,20 @@ public class Company extends IncomeBuilding {
 
     public int getMaxAssignedCitizens() {
         return this.companyType.getMaxAssignedCitizens();
+    }
+
+    public SpecialisationType getSpecialisationType() {
+        return this.companyType.getSpecialisationType();
+    }
+
+    public int getEmployeeMultiplier() {
+        OptionalDouble optionalMultiplier = this.getAssignedCitizens()
+                .stream()
+                .mapToInt(citizen -> citizen.getSpecialisationData().get(this.getSpecialisationType()))
+                .average();
+
+        if (optionalMultiplier.isEmpty()) return 100;
+        return 100 + (int) Math.round(optionalMultiplier.getAsDouble());
     }
 
     public boolean isAssignable() {

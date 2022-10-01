@@ -6,7 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum CompanyType implements BuildableType {
-    COFFEE_SHOP("Coffee shop", -3, 200, 400, 10, 5, 5, 1,  SpecialisationType.SOCIAL, 2);
+    COFFEE_SHOP("Coffee shop", -3, 200, 400, 10, 5, 5, 100,  SpecialisationType.SOCIAL, 2);
 
     private final String name;
     private final int satisfactionModifier;
