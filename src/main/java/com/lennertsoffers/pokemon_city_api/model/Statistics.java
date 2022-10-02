@@ -1,6 +1,7 @@
 package com.lennertsoffers.pokemon_city_api.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.lennertsoffers.pokemon_city_api.model.type.SpecialisationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,5 +40,23 @@ public class Statistics {
                 .map(IncomeBuilding.class::cast)
                 .mapToInt(IncomeBuilding::getIncomePerMinute)
                 .sum();
+    }
+
+    public int getMaxedCitizens() {
+        return (int) this.getUser()
+                .getCity()
+                .getCitizens()
+                .stream()
+                .filter(citizen -> {
+                    for (SpecialisationType specialisationType : SpecialisationType.values()) {
+                        int dataValue = citizen.getSpecialisationData().get(specialisationType);
+                        int maxValue = citizen.getMaxSpecialisationData().get(specialisationType);
+
+                        if (dataValue == maxValue) return true;
+                    }
+
+                    return false;
+                })
+                .count();
     }
 }
