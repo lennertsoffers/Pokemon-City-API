@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @BuildableBuildEnoughFundsConstraint
 public record BuildableBuildDto(
         @NotBlank String name,
-        @NotNull int x,
-        @NotNull int y,
+        @NotNull Integer x,
+        @NotNull Integer y,
         @BuildableTypeConstraint String buildableType
 ) {}

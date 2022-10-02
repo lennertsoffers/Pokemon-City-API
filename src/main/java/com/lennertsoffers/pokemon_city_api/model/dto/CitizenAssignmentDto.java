@@ -1,6 +1,8 @@
 package com.lennertsoffers.pokemon_city_api.model.dto;
 
+import javax.validation.constraints.NotNull;
+
 public record CitizenAssignmentDto(
-        Long citizenId,
-        Long companyId
+        @NotNull Long citizenId,
+        @NotNull Long companyId
 ) {}

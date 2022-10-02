@@ -64,6 +64,11 @@ public class CitizenServiceImpl implements CitizenService {
     }
 
     @Override
+    public void killCitizen(Long id) {
+        citizenRepository.deleteById(id);
+    }
+
+    @Override
     public boolean assignToCompany(CitizenAssignmentDto citizenAssignmentDto) {
         Optional<Buildable> optionalBuildable = buildableRepository.findById(citizenAssignmentDto.companyId());
         Optional<Citizen> optionalCitizen = citizenRepository.findById(citizenAssignmentDto.citizenId());

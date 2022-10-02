@@ -2,6 +2,7 @@ package com.lennertsoffers.pokemon_city_api.controller;
 
 import com.lennertsoffers.pokemon_city_api.model.Buildable;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableBuildDto;
+import com.lennertsoffers.pokemon_city_api.model.dto.BuildableDemolishDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableMoveDto;
 import com.lennertsoffers.pokemon_city_api.service.BuildableService;
@@ -40,10 +41,10 @@ public class BuildableController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/demolish/{id}")
-    @PreAuthorize("@buildableServiceImpl.belongsToUser(#id)")
-    public ResponseEntity<Boolean> demolish(@P("id") @PathVariable("id") Long id) {
-        if (buildableService.demolish(id)) return ResponseEntity.ok().body(true);
+    @DeleteMapping("/demolish")
+    @PreAuthorize("@buildableServiceImpl.belongsToUser(#buildableDemolishDto.buildableId())")
+    public ResponseEntity<Boolean> demolish(@P("buildableDemolishDto") @Valid @RequestBody BuildableDemolishDto buildableDemolishDto) {
+        if (buildableService.demolish(buildableDemolishDto)) return ResponseEntity.ok().body(true);
 
         return ResponseEntity.notFound().build();
     }
