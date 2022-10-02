@@ -2,13 +2,12 @@ package com.lennertsoffers.pokemon_city_api.controller;
 
 import com.lennertsoffers.pokemon_city_api.model.User;
 import com.lennertsoffers.pokemon_city_api.model.dto.UserDataDto;
+import com.lennertsoffers.pokemon_city_api.model.dto.UserUpdateStatisticsDto;
 import com.lennertsoffers.pokemon_city_api.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +26,11 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<UserDataDto> getUserData() {
         return ResponseEntity.ok().body(userService.getUserData());
+    }
+
+    @PostMapping("/me/updateStatistics")
+    public ResponseEntity<?> updateStatistics(@RequestBody UserUpdateStatisticsDto userUpdateStatisticsDto) {
+        userService.updateStatistics(userUpdateStatisticsDto);
+        return ResponseEntity.ok().build();
     }
 }

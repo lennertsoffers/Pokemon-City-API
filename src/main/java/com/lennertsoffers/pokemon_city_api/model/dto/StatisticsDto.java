@@ -4,9 +4,9 @@ public record StatisticsDto(
         int timePlayed,
         int totalValue,
         int buildingsBuilt,
+        int buildingsDemolished,
         int moneySpent,
         int moneyCollected,
-        int profit,
         int incomePerMinute,
         int maxedCitizens
 ) {}

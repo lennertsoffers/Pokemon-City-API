@@ -3,6 +3,7 @@ package com.lennertsoffers.pokemon_city_api.service;
 import com.lennertsoffers.pokemon_city_api.model.Role;
 import com.lennertsoffers.pokemon_city_api.model.User;
 import com.lennertsoffers.pokemon_city_api.model.dto.UserDataDto;
+import com.lennertsoffers.pokemon_city_api.model.dto.UserUpdateStatisticsDto;
 import com.lennertsoffers.pokemon_city_api.model.mapper.UserMapper;
 import com.lennertsoffers.pokemon_city_api.repository.RoleRepository;
 import com.lennertsoffers.pokemon_city_api.repository.UserRepository;
@@ -79,5 +80,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public List<User> getUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public void updateStatistics(UserUpdateStatisticsDto userUpdateStatisticsDto) {
+        this.getAuthUser().getStatistics().updateTimePlayed(userUpdateStatisticsDto.sessionTime());
     }
 }

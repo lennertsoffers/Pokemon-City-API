@@ -39,6 +39,7 @@ public class House extends IncomeBuilding {
 
         this.getCity().getUser().addMoney(rent);
         super.collect();
+        super.updateStatisticMoneyCollected(rent);
 
         return rent;
     }

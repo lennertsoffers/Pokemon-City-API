@@ -68,6 +68,9 @@ public class BuildableServiceImpl implements BuildableService {
             }
         }
 
+        user.getStatistics().updateBuildingsBuild(1);
+        user.getStatistics().updateMoneySpent(buildable.getPrice());
+
         return this.buildableRepository.save(buildable);
     }
 
@@ -93,6 +96,8 @@ public class BuildableServiceImpl implements BuildableService {
 
         user.addMoney(buildable.getPrice() / 2);
         buildableRepository.deleteById(id);
+
+        user.getStatistics().updateBuildingsDemolished(1);
 
         return true;
     }

@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.stream.Stream;
 
 @Entity
 @Data
@@ -18,8 +17,8 @@ public class Statistics {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private int timePlayed = 0;
-    private int totalValue = 0;
     private int buildingsBuilt = 0;
+    private int buildingsDemolished = 0;
     private int moneySpent = 0;
     private int moneyCollected = 0;
 
@@ -27,8 +26,16 @@ public class Statistics {
     @JsonBackReference
     private User user;
 
-    public int getProfit() {
-        return this.totalValue - this.moneySpent;
+    public int getTotalValue() {
+        int buildableValue = this
+                .getUser()
+                .getCity()
+                .getBuildables()
+                .stream()
+                .mapToInt(Buildable::getPrice)
+                .sum();
+
+        return buildableValue + this.getUser().getMoney();
     }
 
     public int getIncomePerMinute() {
@@ -58,5 +65,25 @@ public class Statistics {
                     return false;
                 })
                 .count();
+    }
+
+    public void updateTimePlayed(int amount) {
+        this.timePlayed += amount;
+    }
+
+    public void updateBuildingsBuild(int amount) {
+        this.buildingsBuilt += amount;
+    }
+
+    public void updateBuildingsDemolished(int amount) {
+        this.buildingsDemolished += amount;
+    }
+
+    public void updateMoneySpent(int amount) {
+        this.moneySpent += amount;
+    }
+
+    public void updateMoneyCollected(int amount) {
+        this.moneyCollected += amount;
     }
 }

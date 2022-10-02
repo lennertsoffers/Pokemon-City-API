@@ -11,9 +11,9 @@ public class StatisticsMapper {
                 statistics.getTimePlayed(),
                 statistics.getTotalValue(),
                 statistics.getBuildingsBuilt(),
+                statistics.getBuildingsDemolished(),
                 statistics.getMoneySpent(),
                 statistics.getMoneyCollected(),
-                statistics.getProfit(),
                 statistics.getIncomePerMinute(),
                 statistics.getMaxedCitizens()
         );
