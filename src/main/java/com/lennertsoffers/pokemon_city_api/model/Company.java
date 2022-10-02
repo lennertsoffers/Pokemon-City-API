@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.OptionalDouble;
 
@@ -117,6 +118,14 @@ public class Company extends IncomeBuilding {
 
     public boolean isAssignable() {
         return this.assignedCitizens.size() < this.getMaxAssignedCitizens();
+    }
+
+    public void unEmployAll() {
+        for (Iterator<Citizen> iterator = this.getAssignedCitizens().iterator(); iterator.hasNext();) {
+            Citizen citizen = iterator.next();
+            citizen.assignNull();
+            iterator.remove();
+        }
     }
 
     protected void assign(Citizen citizen) {

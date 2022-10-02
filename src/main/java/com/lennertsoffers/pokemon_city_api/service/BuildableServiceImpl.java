@@ -99,7 +99,12 @@ public class BuildableServiceImpl implements BuildableService {
 
         user.addMoney(buildable.getPrice() / 2);
 
-        buildableDemolishDto.citizenIds().stream().distinct().forEach(citizenService::killCitizen);
+        if (buildable instanceof House) {
+            buildableDemolishDto.citizenIds().stream().distinct().forEach(citizenService::killCitizen);
+        } else if (buildable instanceof Company company) {
+            company.unEmployAll();
+        }
+
         buildableRepository.deleteById(buildableId);
 
         user.getStatistics().updateBuildingsDemolished(1);

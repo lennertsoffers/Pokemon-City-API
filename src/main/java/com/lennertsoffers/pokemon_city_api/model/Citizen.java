@@ -60,8 +60,7 @@ public class Citizen {
         if (this.getCompany() == null) return false;
 
         this.getCompany().unAssing(this.getId());
-        this.setAssignedSince(null);
-        this.setCompany(null);
+        this.assignNull();
 
         return true;
     }
@@ -91,6 +90,11 @@ public class Citizen {
 
             this.getSpecialisationData().put(type, newValue);
         }
+    }
+
+    protected void assignNull() {
+        this.setAssignedSince(null);
+        this.setCompany(null);
     }
 
     private int getHoursSinceLastUpdate() {
