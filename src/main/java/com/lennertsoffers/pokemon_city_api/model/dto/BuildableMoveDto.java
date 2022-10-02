@@ -2,9 +2,11 @@ package com.lennertsoffers.pokemon_city_api.model.dto;
 
 import com.lennertsoffers.pokemon_city_api.validation.BuildableMoveConstraint;
 
+import javax.validation.constraints.NotNull;
+
 @BuildableMoveConstraint
 public record BuildableMoveDto(
-        Long id,
-        int x,
-        int y
+        @NotNull Long id,
+        @NotNull Integer x,
+        @NotNull Integer y
 ) {}
