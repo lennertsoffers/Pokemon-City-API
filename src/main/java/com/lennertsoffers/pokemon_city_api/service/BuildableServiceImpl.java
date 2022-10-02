@@ -2,6 +2,7 @@ package com.lennertsoffers.pokemon_city_api.service;
 
 import com.lennertsoffers.pokemon_city_api.model.*;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableBuildDto;
+import com.lennertsoffers.pokemon_city_api.model.dto.BuildableDemolishDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableMoveDto;
 import com.lennertsoffers.pokemon_city_api.model.mapper.BuildableMapper;
@@ -86,8 +87,10 @@ public class BuildableServiceImpl implements BuildableService {
     }
 
     @Override
-    public Boolean demolish(Long id) {
-        Optional<Buildable> optionalBuildable = buildableRepository.findById(id);
+    public Boolean demolish(BuildableDemolishDto buildableDemolishDto) {
+        Long buildableId = buildableDemolishDto.buildableId();
+
+        Optional<Buildable> optionalBuildable = buildableRepository.findById(buildableId);
 
         if (optionalBuildable.isEmpty()) return false;
 
@@ -95,7 +98,9 @@ public class BuildableServiceImpl implements BuildableService {
         User user = buildable.getCity().getUser();
 
         user.addMoney(buildable.getPrice() / 2);
-        buildableRepository.deleteById(id);
+
+        buildableDemolishDto.citizenIds().stream().distinct().forEach(citizenService::killCitizen);
+        buildableRepository.deleteById(buildableId);
 
         user.getStatistics().updateBuildingsDemolished(1);
 

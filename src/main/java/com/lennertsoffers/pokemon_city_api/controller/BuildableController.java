@@ -44,7 +44,7 @@ public class BuildableController {
     @DeleteMapping("/demolish")
     @PreAuthorize("@buildableServiceImpl.belongsToUser(#buildableDemolishDto.buildableId())")
     public ResponseEntity<Boolean> demolish(@P("buildableDemolishDto") @Valid @RequestBody BuildableDemolishDto buildableDemolishDto) {
-//        if (buildableService.demolish(id)) return ResponseEntity.ok().body(true);
+        if (buildableService.demolish(buildableDemolishDto)) return ResponseEntity.ok().body(true);
 
         return ResponseEntity.notFound().build();
     }
