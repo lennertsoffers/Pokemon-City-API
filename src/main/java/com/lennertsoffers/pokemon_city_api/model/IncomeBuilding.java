@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 public abstract class IncomeBuilding extends Buildable {
     private LocalDateTime lastCollected;
 
+    public abstract int getIncomePerMinute();
+
     public Integer collect() {
         this.setLastCollected(LocalDateTime.now());
         return 0;
@@ -27,5 +29,7 @@ public abstract class IncomeBuilding extends Buildable {
         return duration.toMinutes();
     }
 
-    public abstract int getIncomePerMinute();
+    protected void updateStatisticMoneyCollected(int amount) {
+        this.getCity().getUser().getStatistics().updateMoneyCollected(amount);
+    }
 }

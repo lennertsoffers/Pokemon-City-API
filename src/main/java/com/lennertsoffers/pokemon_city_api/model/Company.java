@@ -43,6 +43,7 @@ public class Company extends IncomeBuilding {
 
         this.getCity().getUser().addMoney(profit);
         super.collect();
+        super.updateStatisticMoneyCollected(profit);
 
         return profit;
     }
