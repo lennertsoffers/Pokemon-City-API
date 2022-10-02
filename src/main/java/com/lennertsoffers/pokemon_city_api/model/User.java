@@ -22,8 +22,10 @@ public class User {
     private Long id;
     private String username;
     private String password;
-    private int xp = 0;
-    private int money = 0;
+
+    // TODO - Reset to default for production
+    private int xp = 10000;
+    private int money = 10000;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private final List<Role> roles = new ArrayList<>();

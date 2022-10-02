@@ -1,8 +1,6 @@
 package com.lennertsoffers.pokemon_city_api.service;
 
-import com.lennertsoffers.pokemon_city_api.model.Buildable;
-import com.lennertsoffers.pokemon_city_api.model.Location;
-import com.lennertsoffers.pokemon_city_api.model.User;
+import com.lennertsoffers.pokemon_city_api.model.*;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableBuildDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildableMoveDto;
@@ -23,6 +21,7 @@ import java.util.Optional;
 public class BuildableServiceImpl implements BuildableService {
     private final BuildableRepository buildableRepository;
     private final UserService userService;
+    private final CitizenService citizenService;
     private final BuildableMapper buildableMapper;
 
     @Override
@@ -32,6 +31,11 @@ public class BuildableServiceImpl implements BuildableService {
                 .getCity()
                 .getBuildables()
                 .stream()
+                .peek(buildable -> {
+                    if (buildable instanceof Company company) {
+                        company.getAssignedCitizens().forEach(Citizen::update);
+                    }
+                })
                 .map(buildableMapper::toBuildableDto)
                 .toList();
     }
@@ -41,7 +45,13 @@ public class BuildableServiceImpl implements BuildableService {
         Optional<Buildable> optionalBuildable = buildableRepository.findById(id);
 
         if (optionalBuildable.isEmpty()) return null;
-        return optionalBuildable.get();
+
+        Buildable buildable = optionalBuildable.get();
+        if (buildable instanceof Company company) {
+            company.getAssignedCitizens().forEach(Citizen::update);
+        }
+
+        return buildable;
     }
 
     @Override
@@ -51,6 +61,12 @@ public class BuildableServiceImpl implements BuildableService {
         User user = buildable.getCity().getUser();
         user.addXp(buildable.getXpWhenFinished());
         user.removeMoney(buildable.getPrice());
+
+        if (buildable instanceof House house) {
+            for (int i = 0; i < house.getNumberOfCitizens(); i++) {
+                citizenService.spawnCitizen(user.getCity());
+            }
+        }
 
         return this.buildableRepository.save(buildable);
     }
