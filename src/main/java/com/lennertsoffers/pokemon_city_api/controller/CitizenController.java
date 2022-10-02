@@ -1,7 +1,7 @@
 package com.lennertsoffers.pokemon_city_api.controller;
 
-import com.lennertsoffers.pokemon_city_api.model.Citizen;
 import com.lennertsoffers.pokemon_city_api.model.dto.CitizenAssignmentDto;
+import com.lennertsoffers.pokemon_city_api.model.dto.CitizenDto;
 import com.lennertsoffers.pokemon_city_api.service.CitizenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ public class CitizenController {
     private final CitizenService citizenService;
 
     @GetMapping
-    public ResponseEntity<List<Citizen>> getCitizens() {
+    public ResponseEntity<List<CitizenDto>> getCitizens() {
         return ResponseEntity.ok().body(citizenService.getAllFromCurrentUser());
     }
 

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -15,11 +16,15 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Citizen {
+    private static final int UPDATES_AFTER = 6;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private LocalDateTime assignedSince;
+    private LocalDateTime updatedOn;
+    private int levelSpeed;
 
     @ElementCollection
     @MapKeyColumn(name="specialisationType")
@@ -46,6 +51,7 @@ public class Citizen {
 
         this.setCompany(company);
         this.setAssignedSince(LocalDateTime.now());
+        this.setUpdatedOn(LocalDateTime.now());
         company.assign(this);
         return true;
     }
@@ -58,5 +64,41 @@ public class Citizen {
         this.setCompany(null);
 
         return true;
+    }
+
+    public void update() {
+        if (this.getCompany() == null) return;
+
+        int hoursSinceLastUpdate = this.getHoursSinceLastUpdate();
+        if (hoursSinceLastUpdate < UPDATES_AFTER) return;
+
+        int timesUpdated = hoursSinceLastUpdate / UPDATES_AFTER;
+        int hoursFurtherInTime = hoursSinceLastUpdate % UPDATES_AFTER;
+
+        this.setUpdatedOn(LocalDateTime.now().minusHours(hoursFurtherInTime));
+
+        SpecialisationType specialisationType = this.getCompany().getSpecialisationType();
+        for (SpecialisationType type : SpecialisationType.values()) {
+            int newValue;
+
+            if (type.equals(specialisationType)) {
+                newValue = this.getSpecialisationData().get(type) + this.getLevelSpeed() * timesUpdated;
+                newValue = Math.min(this.getMaxSpecialisationData().get(type), newValue);
+            } else {
+                newValue = this.getSpecialisationData().get(type) - timesUpdated;
+                newValue = Math.max(0, newValue);
+            }
+
+            this.getSpecialisationData().put(type, newValue);
+        }
+    }
+
+    private int getHoursSinceLastUpdate() {
+        LocalDateTime updatedOn = this.getUpdatedOn();
+        LocalDateTime now = LocalDateTime.now();
+
+        Duration duration = Duration.between(updatedOn, now);
+
+        return (int) duration.toHours();
     }
 }

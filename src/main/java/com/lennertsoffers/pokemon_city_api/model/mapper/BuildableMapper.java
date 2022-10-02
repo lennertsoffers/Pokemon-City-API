@@ -95,7 +95,8 @@ public class BuildableMapper {
                 company.getProfitPerMinute(),
                 company.getEmployeeMultiplier(),
                 company.getMaxAssignedCitizens(),
-                company.getSpecialisationType()
+                company.getSpecialisationType(),
+                company.getAssignedCitizens()
         );
     }
 

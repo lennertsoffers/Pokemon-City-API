@@ -5,6 +5,8 @@ import com.lennertsoffers.pokemon_city_api.model.Citizen;
 import com.lennertsoffers.pokemon_city_api.model.City;
 import com.lennertsoffers.pokemon_city_api.model.Company;
 import com.lennertsoffers.pokemon_city_api.model.dto.CitizenAssignmentDto;
+import com.lennertsoffers.pokemon_city_api.model.dto.CitizenDto;
+import com.lennertsoffers.pokemon_city_api.model.mapper.CitizenMapper;
 import com.lennertsoffers.pokemon_city_api.model.type.SpecialisationType;
 import com.lennertsoffers.pokemon_city_api.repository.BuildableRepository;
 import com.lennertsoffers.pokemon_city_api.repository.CitizenRepository;
@@ -27,10 +29,16 @@ public class CitizenServiceImpl implements CitizenService {
     private final CitizenRepository citizenRepository;
     private final BuildableRepository buildableRepository;
     private final UserService userService;
+    private final CitizenMapper citizenMapper;
 
     @Override
-    public List<Citizen> getAllFromCurrentUser() {
-        return citizenRepository.getAllFromUser(userService.getAuthUser().getId());
+    public List<CitizenDto> getAllFromCurrentUser() {
+        return citizenRepository
+                .getAllFromUser(userService.getAuthUser().getId())
+                .stream()
+                .peek(Citizen::update)
+                .map(citizenMapper::toCitizenDto)
+                .toList();
     }
 
     @Override
@@ -50,6 +58,7 @@ public class CitizenServiceImpl implements CitizenService {
 
         citizen.setSpecialisationData(specialisationData);
         citizen.setMaxSpecialisationData(maxSpecialisationData);
+        citizen.setLevelSpeed((int) Math.round(Math.abs(random.nextGaussian() * 2)) + 1);
 
         return citizenRepository.save(citizen);
     }
