@@ -1,17 +1,16 @@
 package com.lennertsoffers.pokemon_city_api.service;
 
 import com.lennertsoffers.pokemon_city_api.model.*;
-import com.lennertsoffers.pokemon_city_api.model.dto.BuildableBuildDto;
-import com.lennertsoffers.pokemon_city_api.model.dto.BuildableDemolishDto;
-import com.lennertsoffers.pokemon_city_api.model.dto.BuildableDto;
-import com.lennertsoffers.pokemon_city_api.model.dto.BuildableMoveDto;
+import com.lennertsoffers.pokemon_city_api.model.dto.*;
 import com.lennertsoffers.pokemon_city_api.model.mapper.BuildableMapper;
+import com.lennertsoffers.pokemon_city_api.model.mapper.TypeDataMapper;
 import com.lennertsoffers.pokemon_city_api.model.type.*;
 import com.lennertsoffers.pokemon_city_api.repository.BuildableRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,6 +23,7 @@ public class BuildableServiceImpl implements BuildableService {
     private final UserService userService;
     private final CitizenService citizenService;
     private final BuildableMapper buildableMapper;
+    private final TypeDataMapper typeDataMapper;
 
     @Override
     public List<BuildableDto> getBuildableDtos() {
@@ -39,6 +39,15 @@ public class BuildableServiceImpl implements BuildableService {
                 })
                 .map(buildableMapper::toBuildableDto)
                 .toList();
+    }
+
+    @Override
+    public BuildableDataDto getBuildableData() {
+        return new BuildableDataDto(
+                Arrays.stream(HouseType.values()).map(typeDataMapper::toHouseDataDto).toList(),
+                Arrays.stream(CompanyType.values()).map(typeDataMapper::toCompanyDataDto).toList(),
+                Arrays.stream(DecorationType.values()).map(typeDataMapper::toDecorationDataDto).toList()
+        );
     }
 
     @Override

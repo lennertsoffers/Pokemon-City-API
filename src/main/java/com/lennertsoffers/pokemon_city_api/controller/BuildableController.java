@@ -1,10 +1,7 @@
 package com.lennertsoffers.pokemon_city_api.controller;
 
 import com.lennertsoffers.pokemon_city_api.model.Buildable;
-import com.lennertsoffers.pokemon_city_api.model.dto.BuildableBuildDto;
-import com.lennertsoffers.pokemon_city_api.model.dto.BuildableDemolishDto;
-import com.lennertsoffers.pokemon_city_api.model.dto.BuildableDto;
-import com.lennertsoffers.pokemon_city_api.model.dto.BuildableMoveDto;
+import com.lennertsoffers.pokemon_city_api.model.dto.*;
 import com.lennertsoffers.pokemon_city_api.service.BuildableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +22,11 @@ public class BuildableController {
     @GetMapping
     public ResponseEntity<List<BuildableDto>> getBuildables() {
         return ResponseEntity.ok().body(buildableService.getBuildableDtos());
+    }
+
+    @GetMapping("/data")
+    public ResponseEntity<BuildableDataDto> getBuildableData() {
+        return ResponseEntity.ok().body(buildableService.getBuildableData());
     }
 
     @PostMapping("/build")
