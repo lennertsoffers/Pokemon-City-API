@@ -6,7 +6,8 @@ public class PermittedRoutes {
     private static final List<String> permittedRoutes = List.of(
             "/auth/login",
             "/auth/register",
-            "/auth/refreshToken"
+            "/auth/refreshToken",
+            "/api/buildables/data"
     );
 
     public static String toRegex() {
