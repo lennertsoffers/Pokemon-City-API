@@ -61,4 +61,9 @@ public class Decoration extends Buildable {
     public int getWidth() {
         return this.decorationType.getWidth();
     }
+
+    @Override
+    public SpritesheetLocation getSpritesheetLocation() {
+        return this.decorationType.getSpritesheetLocation();
+    }
 }

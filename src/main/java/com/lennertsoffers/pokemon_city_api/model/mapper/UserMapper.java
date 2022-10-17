@@ -17,6 +17,10 @@ public class UserMapper {
                 user.getXp(),
                 user.getLevel(),
                 user.getMoney(),
+                user.getCity().getAmountOfCitizens(),
+                user.getCity().getAmountOfEmployedCitizens(),
+                user.getCity().getSatisfaction(),
+                user.getCity().getName(),
                 statisticsMapper.toStatisticsDto(user.getStatistics())
         );
     }

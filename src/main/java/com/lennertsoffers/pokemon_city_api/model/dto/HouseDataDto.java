@@ -1,5 +1,7 @@
 package com.lennertsoffers.pokemon_city_api.model.dto;
 
+import com.lennertsoffers.pokemon_city_api.model.SpritesheetLocation;
+
 public record HouseDataDto(
     String name,
     int satisfactionModifier,
@@ -10,5 +12,6 @@ public record HouseDataDto(
     int height,
     int numberOfCitizens,
     int maxRent,
-    int rentPerMinute
+    int rentPerMinute,
+    SpritesheetLocation spritesheetLocation
 ) {}

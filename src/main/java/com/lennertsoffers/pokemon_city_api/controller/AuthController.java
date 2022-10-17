@@ -28,6 +28,7 @@ import java.util.Map;
 
 import static com.lennertsoffers.pokemon_city_api.security.RoleType.*;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/auth")
 @Validated

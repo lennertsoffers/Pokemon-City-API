@@ -42,6 +42,16 @@ public class CitizenServiceImpl implements CitizenService {
     }
 
     @Override
+    public List<CitizenDto> getUnassignedCitizensFromCurrentUser() {
+        return citizenRepository
+                .getAllUnassignedFromUser(userService.getAuthUser().getId())
+                .stream()
+                .peek(Citizen::update)
+                .map(citizenMapper::toCitizenDto)
+                .toList();
+    }
+
+    @Override
     public Citizen spawnCitizen(City city) {
         Random random = new Random();
 

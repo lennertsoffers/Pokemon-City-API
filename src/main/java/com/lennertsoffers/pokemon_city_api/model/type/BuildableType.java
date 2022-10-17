@@ -1,5 +1,7 @@
 package com.lennertsoffers.pokemon_city_api.model.type;
 
+import com.lennertsoffers.pokemon_city_api.model.SpritesheetLocation;
+
 public interface BuildableType {
     String getName();
     int getSatisfactionModifier();
@@ -8,4 +10,5 @@ public interface BuildableType {
     int getUnlockedAtLevel();
     int getHeight();
     int getWidth();
+    SpritesheetLocation getSpritesheetLocation();
 }

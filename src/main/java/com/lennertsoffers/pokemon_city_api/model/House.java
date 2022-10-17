@@ -34,6 +34,7 @@ public class House extends IncomeBuilding {
 
         int rent = (int) (minutesSinceLastCollection * incomePerMinute);
 
+        // TODO - Uncomment for production
         if (rent < this.getMaxRent() / 2) return null;
         rent = Math.min(rent, this.getMaxRent());
 
@@ -82,6 +83,11 @@ public class House extends IncomeBuilding {
     @Override
     public int getWidth() {
         return this.houseType.getWidth();
+    }
+
+    @Override
+    public SpritesheetLocation getSpritesheetLocation() {
+        return this.houseType.getSpritesheetLocation();
     }
 
     public int getNumberOfCitizens() {

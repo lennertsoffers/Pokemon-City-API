@@ -94,6 +94,11 @@ public class Company extends IncomeBuilding {
         return this.companyType.getWidth();
     }
 
+    @Override
+    public SpritesheetLocation getSpritesheetLocation() {
+        return this.companyType.getSpritesheetLocation();
+    }
+
     public int getProfitPerMinute() {
         return this.companyType.getProfitPerMinute();
     }

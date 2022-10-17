@@ -65,6 +65,15 @@ public class BuildableServiceImpl implements BuildableService {
     }
 
     @Override
+    public BuildableDto getDtoById(Long id) {
+        Buildable buildable = this.getById(id);
+
+        if (buildable == null) return null;
+
+        return buildableMapper.toBuildableDto(buildable);
+    }
+
+    @Override
     public Buildable build(BuildableBuildDto buildableBuildDto) {
         Buildable buildable = buildableMapper.toBuildable(buildableBuildDto);
 
@@ -85,8 +94,8 @@ public class BuildableServiceImpl implements BuildableService {
     }
 
     @Override
-    public Buildable move(Long id, BuildableMoveDto buildableMoveDto) {
-        Optional<Buildable> optionalBuildable = buildableRepository.findById(id);
+    public Buildable move(BuildableMoveDto buildableMoveDto) {
+        Optional<Buildable> optionalBuildable = buildableRepository.findById(buildableMoveDto.id());
         if (optionalBuildable.isEmpty()) return null;
 
         Buildable buildable = optionalBuildable.get();
@@ -101,7 +110,10 @@ public class BuildableServiceImpl implements BuildableService {
 
         Optional<Buildable> optionalBuildable = buildableRepository.findById(buildableId);
 
-        if (optionalBuildable.isEmpty()) return false;
+        if (optionalBuildable.isEmpty()) {
+            System.out.println("not found");
+            return false;
+        };
 
         Buildable buildable = optionalBuildable.get();
         User user = buildable.getCity().getUser();

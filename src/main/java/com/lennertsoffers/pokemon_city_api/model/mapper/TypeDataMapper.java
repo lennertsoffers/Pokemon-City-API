@@ -21,7 +21,8 @@ public class TypeDataMapper {
                 houseType.getHeight(),
                 houseType.getNumberOfCitizens(),
                 houseType.getMaxRent(),
-                houseType.getRentPerMinute()
+                houseType.getRentPerMinute(),
+                houseType.getSpritesheetLocation()
         );
     }
 
@@ -36,7 +37,8 @@ public class TypeDataMapper {
                 companyType.getHeight(),
                 companyType.getProfitPerMinute(),
                 companyType.getSpecialisationType(),
-                companyType.getMaxAssignedCitizens()
+                companyType.getMaxAssignedCitizens(),
+                companyType.getSpritesheetLocation()
         );
     }
 
@@ -48,7 +50,8 @@ public class TypeDataMapper {
                 decorationType.getPrice(),
                 decorationType.getUnlockedAtLevel(),
                 decorationType.getWidth(),
-                decorationType.getHeight()
+                decorationType.getHeight(),
+                decorationType.getSpritesheetLocation()
         );
     }
 }

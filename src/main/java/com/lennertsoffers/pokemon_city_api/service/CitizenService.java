@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface CitizenService {
     List<CitizenDto> getAllFromCurrentUser();
+    List<CitizenDto> getUnassignedCitizensFromCurrentUser();
     Citizen spawnCitizen(City city);
     void killCitizen(Long id);
     boolean assignToCompany(CitizenAssignmentDto citizenAssignmentDto);

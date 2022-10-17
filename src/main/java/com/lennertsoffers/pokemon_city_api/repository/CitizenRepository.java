@@ -12,4 +12,7 @@ import java.util.List;
 public interface CitizenRepository extends JpaRepository<Citizen, Long> {
     @Query("SELECT c FROM Citizen c WHERE c.city.user.id = :id")
     List<Citizen> getAllFromUser(@Param("id") Long id);
+
+    @Query("SELECT c FROM Citizen c WHERE c.city.user.id = :id AND c.company IS NULL")
+    List<Citizen> getAllUnassignedFromUser(@Param("id") Long id);
 }

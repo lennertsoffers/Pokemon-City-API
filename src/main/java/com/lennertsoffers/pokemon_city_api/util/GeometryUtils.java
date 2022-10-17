@@ -4,10 +4,10 @@ import com.lennertsoffers.pokemon_city_api.model.Buildable;
 
 public class GeometryUtils {
     public static boolean collidesWith(Buildable buildable, int x, int y, int width, int height) {
-        int a_x1 = buildable.getLocation().getX();
-        int a_x2 = buildable.getLocation().getX() + buildable.getWidth() - 1;
-        int a_y1 = buildable.getLocation().getY();
-        int a_y2 = buildable.getLocation().getY() + buildable.getHeight() - 1;
+        int a_x1 = buildable.getLocation().getX() - 1;
+        int a_x2 = buildable.getLocation().getX() + buildable.getWidth();
+        int a_y1 = buildable.getLocation().getY() - 1;
+        int a_y2 = buildable.getLocation().getY() + buildable.getHeight();
 
         int b_x2 = x + width - 1;
         int b_y2 = y + height - 1;
