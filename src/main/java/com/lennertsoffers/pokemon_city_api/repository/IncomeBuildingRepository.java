@@ -1,5 +1,6 @@
 package com.lennertsoffers.pokemon_city_api.repository;
 
+import com.lennertsoffers.pokemon_city_api.model.Company;
 import com.lennertsoffers.pokemon_city_api.model.IncomeBuilding;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +15,7 @@ public interface IncomeBuildingRepository extends JpaRepository<IncomeBuilding, 
 
     @Query("SELECT i FROM IncomeBuilding i WHERE i.city.user.id = :id AND (i.buildableTypeEnum = 'COMPANY' OR i.buildableTypeEnum = 'HOUSE')")
     List<IncomeBuilding> getAllFromUser(@Param("id") Long id);
+
+    @Query("SELECT i FROM IncomeBuilding i WHERE i.city.user.id = :id AND (i.buildableTypeEnum = 'COMPANY')")
+    List<Company> getAllCompaniesFromUser(@Param("id") Long id);
 }

@@ -36,7 +36,9 @@ public class City {
     public double getSatisfaction() {
         int satisfactionSum = this.getBuildables().stream().mapToInt(Buildable::getSatisfactionModifier).sum();
 
-        return (satisfactionSum + SATISFACTION_RANGE) / (SATISFACTION_RANGE * 2F) + 0.5;
+        // TODO - Return calculated value for production
+//        return (satisfactionSum + SATISFACTION_RANGE) / (SATISFACTION_RANGE * 2F) + 0.5;
+        return 1.0;
     }
 
     public int getAmountOfCitizens() {
@@ -47,5 +49,12 @@ public class City {
                     return 0;
                 })
                 .sum();
+    }
+
+    public int getAmountOfEmployedCitizens() {
+        return (int) this.getCitizens()
+                .stream()
+                .filter(citizen -> citizen.getCompany() != null)
+                .count();
     }
 }

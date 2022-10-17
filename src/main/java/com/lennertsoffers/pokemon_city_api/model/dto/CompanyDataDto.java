@@ -1,5 +1,6 @@
 package com.lennertsoffers.pokemon_city_api.model.dto;
 
+import com.lennertsoffers.pokemon_city_api.model.SpritesheetLocation;
 import com.lennertsoffers.pokemon_city_api.model.type.SpecialisationType;
 
 public record CompanyDataDto (
@@ -12,5 +13,6 @@ public record CompanyDataDto (
         int height,
         int profitPerMinute,
         SpecialisationType specialisationType,
-        int maxAssignedCitizens
+        int maxAssignedCitizens,
+        SpritesheetLocation spritesheetLocation
 ) {}

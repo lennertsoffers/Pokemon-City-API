@@ -10,8 +10,9 @@ public interface BuildableService {
     List<BuildableDto> getBuildableDtos();
     BuildableDataDto getBuildableData();
     Buildable getById(Long id);
+    BuildableDto getDtoById(Long id);
     Buildable build(BuildableBuildDto buildableBuildDto);
-    Buildable move(Long id, BuildableMoveDto buildableMoveDto);
+    Buildable move(BuildableMoveDto buildableMoveDto);
     Boolean demolish(BuildableDemolishDto buildableDemolishDto);
     boolean belongsToUser(Long id);
     BuildableType getBuildableType(String buildableType, String name);

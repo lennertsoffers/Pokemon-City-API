@@ -35,4 +35,5 @@ public abstract class Buildable {
     public abstract int getUnlockedAtLevel();
     public abstract int getHeight();
     public abstract int getWidth();
+    public abstract SpritesheetLocation getSpritesheetLocation();
 }

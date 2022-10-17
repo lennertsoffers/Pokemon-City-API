@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"})
 @RestController
 @RequestMapping("/api/citizens")
 @RequiredArgsConstructor
@@ -20,6 +21,11 @@ public class CitizenController {
     @GetMapping
     public ResponseEntity<List<CitizenDto>> getCitizens() {
         return ResponseEntity.ok().body(citizenService.getAllFromCurrentUser());
+    }
+
+    @GetMapping("/unassigned")
+    public ResponseEntity<List<CitizenDto>> getUnassignedCitizens() {
+        return ResponseEntity.ok().body(citizenService.getUnassignedCitizensFromCurrentUser());
     }
 
     @PutMapping("/assign")

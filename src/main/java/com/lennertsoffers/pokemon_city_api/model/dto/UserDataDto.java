@@ -6,5 +6,9 @@ public record UserDataDto(
         int xp,
         int level,
         int money,
-        StatisticsDto statisticsDto
+        int citizens,
+        int employedCitizens,
+        double satisfaction,
+        String cityName,
+        StatisticsDto statistics
 ) {}

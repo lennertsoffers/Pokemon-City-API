@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/buildables")
 @RequiredArgsConstructor
@@ -22,6 +23,15 @@ public class BuildableController {
     @GetMapping
     public ResponseEntity<List<BuildableDto>> getBuildables() {
         return ResponseEntity.ok().body(buildableService.getBuildableDtos());
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("@buildableServiceImpl.belongsToUser(#buildableId)")
+    public ResponseEntity<BuildableDto> getBuildable(@P("buildableId") @PathVariable("id") Long buildableId) {
+        BuildableDto buildableDto = buildableService.getDtoById(buildableId);
+        if (buildableDto != null) return ResponseEntity.ok().body(buildableDto);
+
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/data")
@@ -34,10 +44,10 @@ public class BuildableController {
         return ResponseEntity.created(URI.create("/api/buildables/build")).body(buildableService.build(buildableBuildDto));
     }
 
-    @PutMapping("/move/{id}")
-    @PreAuthorize("@buildableServiceImpl.belongsToUser(#id)")
-    public ResponseEntity<Buildable> move(@P("id") @PathVariable("id") Long id , @Valid @RequestBody BuildableMoveDto buildableMoveDto) {
-        Buildable buildable = buildableService.move(id, buildableMoveDto);
+    @PutMapping("/move")
+    @PreAuthorize("@buildableServiceImpl.belongsToUser(#buildableMoveDto.id())")
+    public ResponseEntity<Buildable> move(@P("buildableMoveDto") @Valid @RequestBody BuildableMoveDto buildableMoveDto) {
+        Buildable buildable = buildableService.move(buildableMoveDto);
         if (buildable != null) return ResponseEntity.ok().body(buildable);
 
         return ResponseEntity.notFound().build();
@@ -46,6 +56,7 @@ public class BuildableController {
     @DeleteMapping("/demolish")
     @PreAuthorize("@buildableServiceImpl.belongsToUser(#buildableDemolishDto.buildableId())")
     public ResponseEntity<Boolean> demolish(@P("buildableDemolishDto") @Valid @RequestBody BuildableDemolishDto buildableDemolishDto) {
+        // TODO - Take only needed citizenIds to delete in validation and only remove needed in service
         if (buildableService.demolish(buildableDemolishDto)) return ResponseEntity.ok().body(true);
 
         return ResponseEntity.notFound().build();

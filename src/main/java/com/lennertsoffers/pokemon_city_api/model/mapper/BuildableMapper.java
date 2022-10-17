@@ -74,7 +74,9 @@ public class BuildableMapper {
                 house.getHouseType(),
                 house.getNumberOfCitizens(),
                 house.getRentPerMinute(),
-                house.getMaxRent()
+                house.getMaxRent(),
+                house.getSpritesheetLocation(),
+                house.getIncomePerMinute()
         );
     }
 
@@ -96,7 +98,9 @@ public class BuildableMapper {
                 company.getEmployeeMultiplier(),
                 company.getMaxAssignedCitizens(),
                 company.getSpecialisationType(),
-                company.getAssignedCitizens()
+                company.getSpritesheetLocation(),
+                company.getIncomePerMinute(),
+                company.getAssignedCitizens().size()
         );
     }
 
@@ -112,7 +116,8 @@ public class BuildableMapper {
                 decoration.getWidth(),
                 decoration.getLocation(),
                 decoration.getBuildableTypeEnum(),
-                decoration.getDecorationType()
+                decoration.getDecorationType(),
+                decoration.getSpritesheetLocation()
         );
     }
 }

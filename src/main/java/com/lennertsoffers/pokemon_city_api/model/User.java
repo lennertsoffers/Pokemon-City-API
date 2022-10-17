@@ -24,7 +24,7 @@ public class User {
     private String password;
 
     // TODO - Reset to default for production
-    private int xp = 10000;
+    private int xp = 1000;
     private int money = 10000;
 
     @ManyToMany(fetch = FetchType.EAGER)
