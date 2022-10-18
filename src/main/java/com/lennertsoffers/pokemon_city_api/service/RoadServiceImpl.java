@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO - Fix buildable mapper
+// TODO - Validation on move (you cannot move roads)
+
 @Service
 @RequiredArgsConstructor
 public class RoadServiceImpl implements RoadService{
