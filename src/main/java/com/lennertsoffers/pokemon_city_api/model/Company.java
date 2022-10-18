@@ -38,7 +38,7 @@ public class Company extends IncomeBuilding {
     @Override
     public Integer collect() {
         long minutesSinceLastCollection = this.getMinutesSinceLastCollection();
-        int incomePerMinute = this.getIncomePerMinute();
+        double incomePerMinute = this.getIncomePerMinute();
 
         int profit = (int) (minutesSinceLastCollection * incomePerMinute);
 
@@ -50,13 +50,11 @@ public class Company extends IncomeBuilding {
     }
 
     @Override
-    public int getIncomePerMinute() {
-        return (int) Math.round(
-                this.getProfitPerMinute() *
+    public double getIncomePerMinute() {
+        return this.getProfitPerMinute() *
                 this.getCity().getAmountOfCitizens() *
-                this.getCity().getSatisfaction() *
-                (this.getEmployeeMultiplier() / 100f)
-        );
+                (this.getCity().getSatisfaction() + 1.5) *
+                (this.getEmployeeMultiplier() / 100f);
     }
 
     @Override

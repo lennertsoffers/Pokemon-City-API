@@ -30,7 +30,7 @@ public class CompanyMapper {
                 company.getSpecialisationType(),
                 company.getSpritesheetLocation(),
                 company.getAssignedCitizens().stream().map(citizenMapper::toCitizenDto).toList(),
-                company.getIncomePerMinute(),
+                (int) Math.round(company.getIncomePerMinute()),
                 company.getAssignedCitizens().size()
         );
     }

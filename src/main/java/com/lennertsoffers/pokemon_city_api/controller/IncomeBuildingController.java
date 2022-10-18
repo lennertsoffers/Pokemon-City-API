@@ -19,10 +19,7 @@ public class IncomeBuildingController {
     public ResponseEntity<Integer> collectRent(@P("id") @PathVariable Long id) {
         Integer collectedAmount = incomeBuildingService.collect(id);
 
-        if (collectedAmount != null) {
-            return ResponseEntity.ok().body(collectedAmount);
-        }
-
+        if (collectedAmount != null) return ResponseEntity.ok().body(collectedAmount);
         return ResponseEntity.notFound().build();
     }
 }

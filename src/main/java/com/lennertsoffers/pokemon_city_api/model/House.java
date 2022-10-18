@@ -30,11 +30,10 @@ public class House extends IncomeBuilding {
     @Override
     public Integer collect() {
         long minutesSinceLastCollection = this.getMinutesSinceLastCollection();
-        int incomePerMinute = this.getIncomePerMinute();
+        double incomePerMinute = this.getIncomePerMinute();
 
         int rent = (int) (minutesSinceLastCollection * incomePerMinute);
 
-        // TODO - Uncomment for production
         if (rent < this.getMaxRent() / 2) return null;
         rent = Math.min(rent, this.getMaxRent());
 
@@ -46,8 +45,9 @@ public class House extends IncomeBuilding {
     }
 
     @Override
-    public int getIncomePerMinute() {
-        return (int) Math.round(this.getRentPerMinute() * this.getCity().getSatisfaction());
+    public double getIncomePerMinute() {
+        double incomePerMin = this.getRentPerMinute() * (this.getCity().getSatisfaction() + 1.5);
+        return incomePerMin;
     }
 
     @Override
