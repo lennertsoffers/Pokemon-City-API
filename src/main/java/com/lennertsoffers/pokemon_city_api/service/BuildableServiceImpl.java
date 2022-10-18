@@ -6,20 +6,20 @@ import com.lennertsoffers.pokemon_city_api.model.mapper.BuildableMapper;
 import com.lennertsoffers.pokemon_city_api.model.mapper.TypeDataMapper;
 import com.lennertsoffers.pokemon_city_api.model.type.*;
 import com.lennertsoffers.pokemon_city_api.repository.BuildableRepository;
+import com.lennertsoffers.pokemon_city_api.repository.RoadRepository;
+import com.lennertsoffers.pokemon_city_api.util.RoadUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class BuildableServiceImpl implements BuildableService {
     private final BuildableRepository buildableRepository;
+    private final RoadRepository roadRepository;
     private final UserService userService;
     private final CitizenService citizenService;
     private final BuildableMapper buildableMapper;
@@ -94,6 +94,19 @@ public class BuildableServiceImpl implements BuildableService {
     }
 
     @Override
+    public List<Road> buildRoads(BuildRoadsDto buildRoadsDto) {
+        List<Road> newRoads = new ArrayList<>();
+        buildRoadsDto.locations().forEach(location -> newRoads.add(new Road(RoadType.SINGLE_ROAD, location)));
+
+        List<Road> roadMap = this.roadRepository.getAllFromUser(this.userService.getAuthUser().getId());
+        roadMap.addAll(newRoads);
+
+        roadMap.forEach(road -> road.setRoadType(RoadUtils.getRoadType(road.getLocation(), roadMap)));
+
+        return this.roadRepository.saveAll(newRoads);
+    }
+
+    @Override
     public Buildable move(BuildableMoveDto buildableMoveDto) {
         Optional<Buildable> optionalBuildable = buildableRepository.findById(buildableMoveDto.id());
         if (optionalBuildable.isEmpty()) return null;
@@ -111,9 +124,8 @@ public class BuildableServiceImpl implements BuildableService {
         Optional<Buildable> optionalBuildable = buildableRepository.findById(buildableId);
 
         if (optionalBuildable.isEmpty()) {
-            System.out.println("not found");
             return false;
-        };
+        }
 
         Buildable buildable = optionalBuildable.get();
         User user = buildable.getCity().getUser();
@@ -149,6 +161,7 @@ public class BuildableServiceImpl implements BuildableService {
             case HOUSE -> HouseType.valueOf(name);
             case COMPANY -> CompanyType.valueOf(name);
             case DECORATION -> DecorationType.valueOf(name);
+            case ROAD -> RoadType.SINGLE_ROAD;
         };
     }
 }

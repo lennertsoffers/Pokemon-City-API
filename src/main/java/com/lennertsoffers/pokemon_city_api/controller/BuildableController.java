@@ -1,6 +1,7 @@
 package com.lennertsoffers.pokemon_city_api.controller;
 
 import com.lennertsoffers.pokemon_city_api.model.Buildable;
+import com.lennertsoffers.pokemon_city_api.model.Road;
 import com.lennertsoffers.pokemon_city_api.model.dto.*;
 import com.lennertsoffers.pokemon_city_api.service.BuildableService;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,11 @@ public class BuildableController {
     @PostMapping("/build")
     public ResponseEntity<Buildable> build(@Valid @RequestBody BuildableBuildDto buildableBuildDto) {
         return ResponseEntity.created(URI.create("/api/buildables/build")).body(buildableService.build(buildableBuildDto));
+    }
+
+    @PostMapping("/buildRoads")
+    public ResponseEntity<List<Road>> buildRoads(BuildRoadsDto buildRoadsDto) {
+        return ResponseEntity.created(URI.create("/api/buildables/buildRoads")).body(buildableService.buildRoads(buildRoadsDto));
     }
 
     @PutMapping("/move")
