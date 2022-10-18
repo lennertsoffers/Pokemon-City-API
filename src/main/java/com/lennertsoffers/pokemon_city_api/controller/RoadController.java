@@ -1,7 +1,7 @@
 package com.lennertsoffers.pokemon_city_api.controller;
 
-import com.lennertsoffers.pokemon_city_api.model.Road;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildRoadsDto;
+import com.lennertsoffers.pokemon_city_api.model.dto.RoadDto;
 import com.lennertsoffers.pokemon_city_api.service.RoadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +19,12 @@ public class RoadController {
     private final RoadService roadService;
 
     @GetMapping
-    public ResponseEntity<List<Road>> getRoads() {
+    public ResponseEntity<List<RoadDto>> getRoads() {
         return ResponseEntity.ok().body(roadService.getRoads());
     }
 
     @PostMapping("/buildRoads")
-    public ResponseEntity<List<Road>> buildRoads(@Valid @RequestBody BuildRoadsDto buildRoadsDto) {
+    public ResponseEntity<List<RoadDto>> buildRoads(@Valid @RequestBody BuildRoadsDto buildRoadsDto) {
         return ResponseEntity.created(URI.create("/api/buildables/buildRoads")).body(roadService.buildRoads(buildRoadsDto));
     }
 }

@@ -23,10 +23,12 @@ public class BuildableServiceImpl implements BuildableService {
 
     @Override
     public List<BuildableDto> getBuildableDtos() {
-        return userService
+        Long userId = userService
                 .getAuthUser()
-                .getCity()
-                .getBuildables()
+                .getId();
+
+        return buildableRepository
+                .getAllNotRoadFromUser(userId)
                 .stream()
                 .peek(buildable -> {
                     if (buildable instanceof Company company) {

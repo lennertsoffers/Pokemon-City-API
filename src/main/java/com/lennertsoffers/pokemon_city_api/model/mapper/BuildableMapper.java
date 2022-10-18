@@ -55,6 +55,7 @@ public class BuildableMapper {
             case HOUSE -> toHouseDto((House) buildable);
             case COMPANY -> toCompanyDto((Company) buildable);
             case DECORATION -> toDecorationDto((Decoration) buildable);
+            default -> buildableDto(buildable);
         };
     }
 
@@ -118,6 +119,31 @@ public class BuildableMapper {
                 decoration.getBuildableTypeEnum(),
                 decoration.getDecorationType(),
                 decoration.getSpritesheetLocation()
+        );
+    }
+
+    private BuildableDto buildableDto(Buildable buildable) {
+        return new BuildableDto(
+                buildable.getId(),
+                buildable.getName(),
+                buildable.getSatisfactionModifier(),
+                buildable.getXpWhenFinished(),
+                buildable.getPrice(),
+                buildable.getUnlockedAtLevel(),
+                buildable.getHeight(),
+                buildable.getWidth(),
+                buildable.getLocation(),
+                buildable.getBuildableTypeEnum(),
+                buildable.getSpritesheetLocation()
+        );
+    }
+
+    public RoadDto toRoadDto(Road road) {
+        return new RoadDto(
+                road.getId(),
+                road.getLocation(),
+                road.getRoadType(),
+                road.getSpritesheetLocation()
         );
     }
 }

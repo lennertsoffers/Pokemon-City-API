@@ -3,6 +3,8 @@ package com.lennertsoffers.pokemon_city_api.service;
 import com.lennertsoffers.pokemon_city_api.model.Road;
 import com.lennertsoffers.pokemon_city_api.model.User;
 import com.lennertsoffers.pokemon_city_api.model.dto.BuildRoadsDto;
+import com.lennertsoffers.pokemon_city_api.model.dto.RoadDto;
+import com.lennertsoffers.pokemon_city_api.model.mapper.BuildableMapper;
 import com.lennertsoffers.pokemon_city_api.model.type.RoadType;
 import com.lennertsoffers.pokemon_city_api.repository.RoadRepository;
 import com.lennertsoffers.pokemon_city_api.util.RoadUtils;
@@ -12,22 +14,24 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO - Fix buildable mapper
-// TODO - Validation on move (you cannot move roads)
-
 @Service
 @RequiredArgsConstructor
 public class RoadServiceImpl implements RoadService{
     private final RoadRepository roadRepository;
     private final UserService userService;
+    private final BuildableMapper buildableMapper;
 
     @Override
-    public List<Road> getRoads() {
-        return this.roadRepository.getAllFromUser(userService.getUserData().id());
+    public List<RoadDto> getRoads() {
+        return this.roadRepository
+                .getAllFromUser(userService.getUserData().id())
+                .stream()
+                .map(buildableMapper::toRoadDto)
+                .toList();
     }
 
     @Override
-    public List<Road> buildRoads(BuildRoadsDto buildRoadsDto) {
+    public List<RoadDto> buildRoads(BuildRoadsDto buildRoadsDto) {
         User user = this.userService.getAuthUser();
 
         List<Road> newRoads = new ArrayList<>();
@@ -43,7 +47,9 @@ public class RoadServiceImpl implements RoadService{
 
         roadMap.forEach(road -> road.setRoadType(RoadUtils.getRoadType(road.getLocation(), roadMap)));
 
-        return this.roadRepository.saveAll(roadMap);
+        List<Road> savedRoads = this.roadRepository.saveAll(roadMap);
+
+        return savedRoads.stream().map(buildableMapper::toRoadDto).toList();
     }
 
     @Override
