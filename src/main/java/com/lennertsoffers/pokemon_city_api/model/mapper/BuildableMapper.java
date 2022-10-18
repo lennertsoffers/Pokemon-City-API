@@ -76,7 +76,7 @@ public class BuildableMapper {
                 house.getRentPerMinute(),
                 house.getMaxRent(),
                 house.getSpritesheetLocation(),
-                house.getIncomePerMinute()
+                (int) Math.round(house.getIncomePerMinute())
         );
     }
 
@@ -99,7 +99,7 @@ public class BuildableMapper {
                 company.getMaxAssignedCitizens(),
                 company.getSpecialisationType(),
                 company.getSpritesheetLocation(),
-                company.getIncomePerMinute(),
+                (int) Math.round(company.getIncomePerMinute()),
                 company.getAssignedCitizens().size()
         );
     }

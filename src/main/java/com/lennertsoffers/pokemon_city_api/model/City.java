@@ -13,7 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class City {
-    private static final int SATISFACTION_RANGE = 50;
+    private static final int MIN_SATISFACTION = -100;
+    private static final int MAX_SATISFACTION = 100;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,9 +37,9 @@ public class City {
     public double getSatisfaction() {
         int satisfactionSum = this.getBuildables().stream().mapToInt(Buildable::getSatisfactionModifier).sum();
 
-        // TODO - Return calculated value for production
-//        return (satisfactionSum + SATISFACTION_RANGE) / (SATISFACTION_RANGE * 2F) + 0.5;
-        return 1.0;
+        satisfactionSum = Math.min(MAX_SATISFACTION, Math.max(MIN_SATISFACTION, satisfactionSum));
+
+        return satisfactionSum / 100F;
     }
 
     public int getAmountOfCitizens() {

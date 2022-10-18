@@ -14,7 +14,7 @@ public class StatisticsMapper {
                 statistics.getBuildingsDemolished(),
                 statistics.getMoneySpent(),
                 statistics.getMoneyCollected(),
-                statistics.getIncomePerMinute(),
+                (int) Math.round(statistics.getIncomePerMinute()),
                 statistics.getMaxedCitizens()
         );
     }

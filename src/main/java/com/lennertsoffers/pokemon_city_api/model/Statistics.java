@@ -38,14 +38,14 @@ public class Statistics {
         return buildableValue + this.getUser().getMoney();
     }
 
-    public int getIncomePerMinute() {
+    public double getIncomePerMinute() {
         return this.getUser()
                 .getCity()
                 .getBuildables()
                 .stream()
                 .filter(buildable -> buildable instanceof IncomeBuilding)
                 .map(IncomeBuilding.class::cast)
-                .mapToInt(IncomeBuilding::getIncomePerMinute)
+                .mapToDouble(IncomeBuilding::getIncomePerMinute)
                 .sum();
     }
 

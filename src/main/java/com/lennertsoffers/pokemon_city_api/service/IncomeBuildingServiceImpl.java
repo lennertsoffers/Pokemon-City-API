@@ -22,6 +22,7 @@ public class IncomeBuildingServiceImpl implements IncomeBuildingService {
     @Override
     public Integer collect(Long id) {
         IncomeBuilding incomeBuilding = incomeBuildingRepository.findIncomeBuildingById(id);
+
         if (incomeBuilding == null) return null;
 
         return incomeBuilding.collect();
