@@ -13,10 +13,10 @@ public class RoadUtils {
         boolean leftAdjacent = false;
         boolean rightAdjacent = false;
 
-        if (roadMap.stream().anyMatch(road -> road.getLocation().equals(location.copy().add(0, -1)))) topAdjacent = true;
-        if (roadMap.stream().anyMatch(road -> road.getLocation().equals(location.copy().add(0, 1)))) bottomAdjacent = true;
-        if (roadMap.stream().anyMatch(road -> road.getLocation().equals(location.copy().add(-1, 0)))) leftAdjacent = true;
-        if (roadMap.stream().anyMatch(road -> road.getLocation().equals(location.copy().add(1, 0)))) rightAdjacent = true;
+        if (roadMap.stream().anyMatch(road -> road.getLocation().equals(location.copy().add(0, -2)))) topAdjacent = true;
+        if (roadMap.stream().anyMatch(road -> road.getLocation().equals(location.copy().add(0, 2)))) bottomAdjacent = true;
+        if (roadMap.stream().anyMatch(road -> road.getLocation().equals(location.copy().add(-2, 0)))) leftAdjacent = true;
+        if (roadMap.stream().anyMatch(road -> road.getLocation().equals(location.copy().add(2, 0)))) rightAdjacent = true;
 
         if (!topAdjacent && !bottomAdjacent && !leftAdjacent && !rightAdjacent) return RoadType.SINGLE_ROAD;
         if (topAdjacent && bottomAdjacent && leftAdjacent && rightAdjacent) return RoadType.CROSSROAD;
