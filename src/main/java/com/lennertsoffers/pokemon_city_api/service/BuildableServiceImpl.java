@@ -9,28 +9,26 @@ import com.lennertsoffers.pokemon_city_api.repository.BuildableRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class BuildableServiceImpl implements BuildableService {
     private final BuildableRepository buildableRepository;
     private final UserService userService;
     private final CitizenService citizenService;
+    private final RoadService roadService;
     private final BuildableMapper buildableMapper;
     private final TypeDataMapper typeDataMapper;
 
     @Override
     public List<BuildableDto> getBuildableDtos() {
-        return userService
+        Long userId = userService
                 .getAuthUser()
-                .getCity()
-                .getBuildables()
+                .getId();
+
+        return buildableRepository
+                .getAllNotRoadFromUser(userId)
                 .stream()
                 .peek(buildable -> {
                     if (buildable instanceof Company company) {
@@ -111,11 +109,11 @@ public class BuildableServiceImpl implements BuildableService {
         Optional<Buildable> optionalBuildable = buildableRepository.findById(buildableId);
 
         if (optionalBuildable.isEmpty()) {
-            System.out.println("not found");
             return false;
-        };
+        }
 
         Buildable buildable = optionalBuildable.get();
+
         User user = buildable.getCity().getUser();
 
         user.addMoney(buildable.getPrice() / 2);
@@ -129,6 +127,7 @@ public class BuildableServiceImpl implements BuildableService {
         buildableRepository.deleteById(buildableId);
 
         user.getStatistics().updateBuildingsDemolished(1);
+        if (buildable instanceof Road) this.roadService.updateRoads();
 
         return true;
     }
@@ -149,6 +148,7 @@ public class BuildableServiceImpl implements BuildableService {
             case HOUSE -> HouseType.valueOf(name);
             case COMPANY -> CompanyType.valueOf(name);
             case DECORATION -> DecorationType.valueOf(name);
+            case ROAD -> RoadType.SINGLE_ROAD;
         };
     }
 }
