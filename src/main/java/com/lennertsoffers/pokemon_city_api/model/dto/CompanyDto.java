@@ -13,13 +13,13 @@ import java.time.LocalDateTime;
 public class CompanyDto extends IncomeBuildingDto {
     private final CompanyType companyType;
     private final int profitPerMinute;
-    private final int employeeMultiplier;
+    private final double employeeMultiplier;
     private final int maxAssignedCitizens;
     private final int incomePerMinute;
     private final int assignedCitizens;
     private final SpecialisationType specialisationType;
 
-    public CompanyDto(Long id, String name, int satisfactionModifier, int xpWhenFinished, int price, int unlockedAtLevel, int height, int width, Location location, BuildableTypeEnum buildableTypeEnum, LocalDateTime lastCollected, CompanyType companyType, int profitPerMinute, int employeeMultiplier, int maxAssignedCitizens, SpecialisationType specialisationType, SpritesheetLocation spritesheetLocation, int incomePerMinute, int assignedCitizens) {
+    public CompanyDto(Long id, String name, int satisfactionModifier, int xpWhenFinished, int price, int unlockedAtLevel, int height, int width, Location location, BuildableTypeEnum buildableTypeEnum, LocalDateTime lastCollected, CompanyType companyType, int profitPerMinute, double employeeMultiplier, int maxAssignedCitizens, SpecialisationType specialisationType, SpritesheetLocation spritesheetLocation, int incomePerMinute, int assignedCitizens) {
         super(id, name, satisfactionModifier, xpWhenFinished, price, unlockedAtLevel, height, width, location, buildableTypeEnum, lastCollected, spritesheetLocation);
         this.companyType = companyType;
         this.profitPerMinute = profitPerMinute;

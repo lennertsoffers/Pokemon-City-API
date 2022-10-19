@@ -49,12 +49,24 @@ public class Company extends IncomeBuilding {
         return profit;
     }
 
+    /**
+     * <p>
+     * Calculates and returns the income that this company will generate in one minute
+     * </p>
+     *
+     * <p>
+     * The formula used for this is:<br/>
+     * Income Per Minute = profit per min * (1 + (#citizens / 50)) * (satisfaction + 1.5) * (employee multiplier)
+     * </p>
+     *
+     * @return The income generated in one minute by this company
+     */
     @Override
     public double getIncomePerMinute() {
         return this.getProfitPerMinute() *
-                this.getCity().getAmountOfCitizens() *
+                (1 + this.getCity().getAmountOfCitizens() / 100F) *
                 (this.getCity().getSatisfaction() + 1.5) *
-                (this.getEmployeeMultiplier() / 100f);
+                this.getEmployeeMultiplier();
     }
 
     @Override
@@ -109,14 +121,13 @@ public class Company extends IncomeBuilding {
         return this.companyType.getSpecialisationType();
     }
 
-    public int getEmployeeMultiplier() {
-        OptionalDouble optionalMultiplier = this.getAssignedCitizens()
+    public double getEmployeeMultiplier() {
+        double multiplier = this.getAssignedCitizens()
                 .stream()
-                .mapToInt(citizen -> citizen.getSpecialisationData().get(this.getSpecialisationType()))
-                .average();
+                .mapToDouble(citizen -> citizen.getSpecialisationData().get(this.getSpecialisationType()) / 100F)
+                .sum();
 
-        if (optionalMultiplier.isEmpty()) return 100;
-        return 100 + (int) Math.round(optionalMultiplier.getAsDouble());
+        return 1 + multiplier;
     }
 
     public boolean isAssignable() {

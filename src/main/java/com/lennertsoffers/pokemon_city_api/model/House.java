@@ -46,8 +46,7 @@ public class House extends IncomeBuilding {
 
     @Override
     public double getIncomePerMinute() {
-        double incomePerMin = this.getRentPerMinute() * (this.getCity().getSatisfaction() + 1.5);
-        return incomePerMin;
+        return this.getRentPerMinute() * (this.getCity().getSatisfaction() + 1.5);
     }
 
     @Override

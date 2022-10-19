@@ -25,7 +25,7 @@ public class User {
 
     // TODO - Reset to default for production
     private int xp = 1000;
-    private int money = 10000;
+    private int money = 50000;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private final List<Role> roles = new ArrayList<>();
