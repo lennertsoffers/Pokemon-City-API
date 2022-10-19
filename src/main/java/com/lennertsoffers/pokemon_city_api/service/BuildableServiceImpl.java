@@ -43,7 +43,7 @@ public class BuildableServiceImpl implements BuildableService {
     public BuildableDataDto getBuildableData() {
         return new BuildableDataDto(
                 Arrays.stream(HouseType.values()).map(typeDataMapper::toHouseDataDto).toList(),
-                Arrays.stream(CompanyType.values()).map(typeDataMapper::toCompanyDataDto).toList(),
+                Arrays.stream(CompanyType.values()).map(typeDataMapper::toCompanyDataDto).sorted(Comparator.comparingInt(CompanyDataDto::unlockedAtLevel)).toList(),
                 Arrays.stream(DecorationType.values()).map(typeDataMapper::toDecorationDataDto).toList()
         );
     }

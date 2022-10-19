@@ -14,7 +14,7 @@ import java.util.List;
 public class CompanyWithEmployeesDto extends CompanyDto {
     private final List<CitizenDto> employees;
 
-    public CompanyWithEmployeesDto(Long id, String name, int satisfactionModifier, int xpWhenFinished, int price, int unlockedAtLevel, int height, int width, Location location, BuildableTypeEnum buildableTypeEnum, LocalDateTime lastCollected, CompanyType companyType, int profitPerMinute, int employeeMultiplier, int maxAssignedCitizens, SpecialisationType specialisationType, SpritesheetLocation spritesheetLocation, List<CitizenDto> employees, int incomePerMinute, int assignedCitizens) {
+    public CompanyWithEmployeesDto(Long id, String name, int satisfactionModifier, int xpWhenFinished, int price, int unlockedAtLevel, int height, int width, Location location, BuildableTypeEnum buildableTypeEnum, LocalDateTime lastCollected, CompanyType companyType, int profitPerMinute, double employeeMultiplier, int maxAssignedCitizens, SpecialisationType specialisationType, SpritesheetLocation spritesheetLocation, List<CitizenDto> employees, int incomePerMinute, int assignedCitizens) {
         super(id, name, satisfactionModifier, xpWhenFinished, price, unlockedAtLevel, height, width, location, buildableTypeEnum, lastCollected, companyType, profitPerMinute, employeeMultiplier, maxAssignedCitizens, specialisationType, spritesheetLocation, incomePerMinute, assignedCitizens);
         this.employees = employees;
     }
