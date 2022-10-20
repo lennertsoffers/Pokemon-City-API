@@ -4,6 +4,9 @@ import com.lennertsoffers.pokemon_city_api.model.SpritesheetLocation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Static company data
+ */
 @AllArgsConstructor
 @Getter
 public enum CompanyType implements BuildableType {

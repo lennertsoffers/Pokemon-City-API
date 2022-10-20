@@ -12,8 +12,13 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.OptionalDouble;
 
+/**
+ * <b>Represents a company in the city</b>
+ * <p>Companies generate profit over time (depending on the employees and amount of citizens in the city)</p>
+ * <p>Citizens can be assigned to companies so they'll generate more money</p>
+ * @see IncomeBuilding
+ */
 @Entity
 @DiscriminatorValue("Company")
 @Getter
@@ -35,14 +40,21 @@ public class Company extends IncomeBuilding {
     @JsonManagedReference
     private List<Citizen> assignedCitizens = new ArrayList<>();
 
+    /**
+     * <p>Collects the accumulated money since last collection and add it to the user to which this building belongs to</p>
+     * @return The collected amount of money
+     */
     @Override
     public Integer collect() {
         long minutesSinceLastCollection = this.getMinutesSinceLastCollection();
         double incomePerMinute = this.getIncomePerMinute();
 
+        // Profit is the income per minute of the company times the minutes since the last collection
         int profit = (int) (minutesSinceLastCollection * incomePerMinute);
 
+        // Add the money to current user
         this.getCity().getUser().addMoney(profit);
+
         super.collect();
         super.updateStatisticMoneyCollected(profit);
 
@@ -51,12 +63,17 @@ public class Company extends IncomeBuilding {
 
     /**
      * <p>
-     * Calculates and returns the income that this company will generate in one minute
+     *     Calculates and returns the income that this company will generate in one minute
      * </p>
-     *
      * <p>
-     * The formula used for this is:<br/>
-     * Income Per Minute = profit per min * (1 + (#citizens / 50)) * (satisfaction + 1.5) * (employee multiplier)
+     *     The formula used for this is:<br/>
+     *     Income Per Minute = profit per min * citizenMultiplier * satisfaction * employee multiplier
+     *     <ul>
+     *         <li>Profit per minute: Amount of profit this company generates in one minute (static)</li>
+     *         <li>CitizenMultiplier: 1 + (citizens in city / 100) => Each citizen gives 0.01 more profit</li>
+     *         <li>Satisfaction: Satisfaction of the city + 1.5 (city satisfaction ranges from -1 until 1 => +1.5 because we cannot multiply by 0)</li>
+     *         <li>Employee multiplier</li>
+     *     </ul>
      * </p>
      *
      * @return The income generated in one minute by this company
@@ -67,6 +84,37 @@ public class Company extends IncomeBuilding {
                 (1 + this.getCity().getAmountOfCitizens() / 100F) *
                 (this.getCity().getSatisfaction() + 1.5) *
                 this.getEmployeeMultiplier();
+    }
+
+    /**
+     * Calculates the sum of the specialisationData of all the employees of this company
+     * @return A double representing the multiplier that employees give this company
+     */
+    public double getEmployeeMultiplier() {
+        double multiplier = this.getAssignedCitizens()
+                .stream()
+                .mapToDouble(citizen -> citizen.getSpecialisationData().get(this.getSpecialisationType()) / 100F)
+                .sum();
+
+        return 1 + multiplier;
+    }
+
+    /**
+     * @return true if there is a free employee space in the company
+     */
+    public boolean isFullyAssigned() {
+        return this.assignedCitizens.size() >= this.getMaxAssignedCitizens();
+    }
+
+    /**
+     * Un-assigns all the citizens assigned to this company
+     */
+    public void unEmployAll() {
+        for (Iterator<Citizen> iterator = this.getAssignedCitizens().iterator(); iterator.hasNext();) {
+            Citizen citizen = iterator.next();
+            citizen.assignNull();
+            iterator.remove();
+        }
     }
 
     @Override
@@ -121,31 +169,20 @@ public class Company extends IncomeBuilding {
         return this.companyType.getSpecialisationType();
     }
 
-    public double getEmployeeMultiplier() {
-        double multiplier = this.getAssignedCitizens()
-                .stream()
-                .mapToDouble(citizen -> citizen.getSpecialisationData().get(this.getSpecialisationType()) / 100F)
-                .sum();
-
-        return 1 + multiplier;
-    }
-
-    public boolean isAssignable() {
-        return this.assignedCitizens.size() < this.getMaxAssignedCitizens();
-    }
-
-    public void unEmployAll() {
-        for (Iterator<Citizen> iterator = this.getAssignedCitizens().iterator(); iterator.hasNext();) {
-            Citizen citizen = iterator.next();
-            citizen.assignNull();
-            iterator.remove();
-        }
-    }
-
+    /**
+     * Assign a citizen to this company
+     * @param citizen The citizen that will be assigned to this company
+     */
     protected void assign(Citizen citizen) {
+        // Return if there are no free spaces for employees
+        if (this.isFullyAssigned()) return;
         this.getAssignedCitizens().add(citizen);
     }
 
+    /**
+     * Un-assigns a citizen from this company
+     * @param citizenId The id of the citizen that has to be unemployed
+     */
     protected void unAssing(Long citizenId) {
         this.getAssignedCitizens().removeIf(citizen -> citizen.getId().equals(citizenId));
     }

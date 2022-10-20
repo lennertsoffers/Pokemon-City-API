@@ -1,5 +1,6 @@
 package com.lennertsoffers.pokemon_city_api.model.dto;
 
+import com.lennertsoffers.pokemon_city_api.model.House;
 import com.lennertsoffers.pokemon_city_api.model.Location;
 import com.lennertsoffers.pokemon_city_api.model.SpritesheetLocation;
 import com.lennertsoffers.pokemon_city_api.model.type.BuildableTypeEnum;
@@ -8,6 +9,10 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+/**
+ * <p>DTO containing all important info about a House</p>
+ * @see House
+ */
 @Getter
 public class HouseDto extends IncomeBuildingDto {
     private final HouseType houseType;

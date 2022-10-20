@@ -10,6 +10,11 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 
+/**
+ * <b>Represents a decoration in the city</b>
+ * <p>Decorations provide positive satisfaction</p>
+ * @see Buildable
+ */
 @Entity
 @DiscriminatorValue("Decoration")
 @Getter

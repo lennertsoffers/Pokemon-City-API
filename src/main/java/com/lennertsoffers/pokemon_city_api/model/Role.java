@@ -9,6 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * <b>Represents a role a user can have</b>
+ */
 @Entity
 @Data
 @NoArgsConstructor

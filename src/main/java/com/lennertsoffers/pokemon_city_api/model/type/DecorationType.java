@@ -4,6 +4,9 @@ import com.lennertsoffers.pokemon_city_api.model.SpritesheetLocation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Static decoration data
+ */
 @AllArgsConstructor
 @Getter
 public enum DecorationType implements BuildableType {

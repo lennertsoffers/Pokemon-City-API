@@ -12,14 +12,26 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+/**
+ * <p>Mapper to map Buildables to BuildableDtos on sub- and supertype</p>
+ */
 @Component
 @RequiredArgsConstructor
 public class BuildableMapper {
     private final UserService userService;
 
-    public Buildable toBuildable(BuildableBuildDto buildableBuildDto) {
+    /**
+     * <p>Converts a BuildableBuildDto to a buildable</p>
+     * <p>Sets default values such as the city of the buildable and if it is an IncomeBuilding, the lastCollected time (sys-time)</p>
+     * @param buildableBuildDto The BuildableBuildDto having all the data to create a new buildable and match its type
+     * @return The created buildable instance
+     */
+    public Buildable createBuildable(BuildableBuildDto buildableBuildDto) {
+        // Gets the BuildableType from the DTO
         BuildableTypeEnum buildableType = BuildableTypeEnum.valueOf(buildableBuildDto.buildableType());
+        // Converts the coordinates in the DTO to a location object
         Location location = new Location(buildableBuildDto.x(), buildableBuildDto.y());
+        // Get the city of the current user
         City city = userService.getAuthUser().getCity();
 
         switch (buildableType) {
@@ -50,6 +62,12 @@ public class BuildableMapper {
         return null;
     }
 
+    /**
+     * <p>Maps a Buildable to a BuildableDto</p>
+     * <p>Checks which subtype of Buildable the Buildable has and then converts it to the right DTO</p>
+     * @param buildable The Buildable that has to be mapped
+     * @return The mapped DTO object as corresponding subtype of Buildable
+     */
     public BuildableDto toBuildableDto(Buildable buildable) {
         return switch (buildable.getBuildableTypeEnum()) {
             case HOUSE -> toHouseDto((House) buildable);
@@ -59,6 +77,12 @@ public class BuildableMapper {
         };
     }
 
+    /**
+     * <p>Maps a House object to a HouseDto object</p>
+     * @param house The house that has to be mapped
+     * @return The HouseDto object created from the House
+     * @see HouseDto
+     */
     public HouseDto toHouseDto(House house) {
         return new HouseDto(
                 house.getId(),
@@ -81,6 +105,12 @@ public class BuildableMapper {
         );
     }
 
+    /**
+     * <p>Maps a Company object to a CompanyDto object</p>
+     * @param company The Company that has to be mapped
+     * @return The CompanyDto object created from the Company
+     * @see CompanyDto
+     */
     public CompanyDto toCompanyDto(Company company) {
         return new CompanyDto(
                 company.getId(),
@@ -105,6 +135,12 @@ public class BuildableMapper {
         );
     }
 
+    /**
+     * <p>Maps a Decoration object to a DecorationDto object</p>
+     * @param decoration The Decoration that has to be mapped
+     * @return The DecorationDto object created from the Decoration
+     * @see DecorationDto
+     */
     public DecorationDto toDecorationDto(Decoration decoration) {
         return new DecorationDto(
                 decoration.getId(),
@@ -122,6 +158,28 @@ public class BuildableMapper {
         );
     }
 
+    /**
+     * <p>Maps a Road object to a RoadDto object</p>
+     * @param road The Road that has to be mapped
+     * @return The RoadDto object created from the Road
+     * @see RoadDto
+     */
+    public RoadDto toRoadDto(Road road) {
+        return new RoadDto(
+                road.getId(),
+                road.getLocation(),
+                road.getRoadType(),
+                road.getSpritesheetLocation()
+        );
+    }
+
+    /**
+     * <p>Maps a Buildable object to a BuildableDto object</p>
+     * <p>Used to map to a generic buildable instead of a specific subtype</p>
+     * @param buildable The Buildable that has to be mapped
+     * @return The BuildableDto object created from the Buildable
+     * @see BuildableDto
+     */
     private BuildableDto buildableDto(Buildable buildable) {
         return new BuildableDto(
                 buildable.getId(),
@@ -135,15 +193,6 @@ public class BuildableMapper {
                 buildable.getLocation(),
                 buildable.getBuildableTypeEnum(),
                 buildable.getSpritesheetLocation()
-        );
-    }
-
-    public RoadDto toRoadDto(Road road) {
-        return new RoadDto(
-                road.getId(),
-                road.getLocation(),
-                road.getRoadType(),
-                road.getSpritesheetLocation()
         );
     }
 }

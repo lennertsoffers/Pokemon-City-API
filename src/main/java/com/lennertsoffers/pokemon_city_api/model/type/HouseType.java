@@ -4,6 +4,9 @@ import com.lennertsoffers.pokemon_city_api.model.SpritesheetLocation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Static house data
+ */
 @Getter
 @AllArgsConstructor
 public enum HouseType implements BuildableType {

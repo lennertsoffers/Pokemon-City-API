@@ -11,6 +11,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <b>Represents a user of the application</b>
+ */
 @Entity
 @Getter
 @Setter
@@ -24,7 +27,7 @@ public class User {
     private String password;
 
     // TODO - Reset to default for production
-    private int xp = 1000;
+    private int xp = 0;
     private int money = 50000;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -55,7 +58,11 @@ public class User {
         this.xp += amount;
     }
 
+    /**
+     * Calculates the level that a user has by applying the level formula on its experience
+     * @return The user level
+     */
     public int getLevel() {
-        return (int) Math.floor(Math.pow((this.getXp() / 100F), (1 / 1.2)));
+        return (int) Math.floor((500 + Math.sqrt(250000 + 2000 * this.getXp())) / 1000);
     }
 }
