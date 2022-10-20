@@ -17,12 +17,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.Arrays;
 
+/**
+ * Security Configuration Class
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -30,6 +31,12 @@ import java.util.Arrays;
 public class SecurityConfig {
     private final RoleService roleService;
 
+    /**
+     * Bean that creates a record in the database for each role in the RoleType enum<br/>
+     * To create a new role, add a new Literal to the enum<br/>
+     *
+     * @see RoleType
+     */
     @Bean
     public void saveRoles() {
         Arrays.stream(RoleType.values()).forEach(roleType -> {
@@ -39,16 +46,31 @@ public class SecurityConfig {
         });
     }
 
+    /**
+     * Configures the passwordEncoder to for encryption in the application<br/>
+     *
+     * @return A new instance of BCryptPasswordEncoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Returns the AuthenticationManager bean in the application so that it is globally accessible
+     * @param authenticationConfiguration the AuthenticationConfiguration of the application
+     * @return The AuthenticationManager bean in the application
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    /**
+     * Configures and returns the SecurityFilterChain for request coming in the application
+     * @param http the HttpSecurity bean in the application
+     * @return the configured SecurityFilterChain
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // TODO - Enable cors and csrf for production
@@ -62,13 +84,13 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Provides the WebMvcConfigurer instance to the application
+     * @return A new instance of the WebConfig class
+     * @see WebConfig
+     */
     @Bean
     public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST","PUT", "DELETE");
-            }
-        };
+        return new WebConfig();
     }
 }

@@ -1,10 +1,14 @@
 package com.lennertsoffers.pokemon_city_api.service;
 
+import com.lennertsoffers.pokemon_city_api.model.City;
 import com.lennertsoffers.pokemon_city_api.model.Role;
+import com.lennertsoffers.pokemon_city_api.model.Statistics;
 import com.lennertsoffers.pokemon_city_api.model.User;
+import com.lennertsoffers.pokemon_city_api.model.dto.UserCreationDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.UserDataDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.UserUpdateStatisticsDto;
 import com.lennertsoffers.pokemon_city_api.model.mapper.UserMapper;
+import com.lennertsoffers.pokemon_city_api.repository.CityRepository;
 import com.lennertsoffers.pokemon_city_api.repository.RoleRepository;
 import com.lennertsoffers.pokemon_city_api.repository.UserRepository;
 import com.lennertsoffers.pokemon_city_api.security.RoleType;
@@ -19,14 +23,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
+
+import static com.lennertsoffers.pokemon_city_api.security.RoleType.PLAYER;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
+    private final StatisticsService statisticsService;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final CityRepository cityRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
@@ -41,6 +50,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .toList();
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+    }
+
+    @Override
+    public User register(UserCreationDto userCreationDto) {
+        User user = new User(userCreationDto.username(), userCreationDto.password());
+        Statistics statistics = new Statistics();
+        statistics.setUser(user);
+        City city = new City();
+        city.setName(userCreationDto.username() + " city");
+        city.setDateCreated(LocalDate.now());
+        city.setUser(user);
+
+        this.saveUser(user);
+        statisticsService.saveStatistics(statistics);
+        cityRepository.save(city);
+
+        return this.addRoleToUser(userCreationDto.username(), PLAYER);
     }
 
     @Override

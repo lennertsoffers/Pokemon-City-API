@@ -1,6 +1,7 @@
 package com.lennertsoffers.pokemon_city_api.service;
 
 import com.lennertsoffers.pokemon_city_api.model.User;
+import com.lennertsoffers.pokemon_city_api.model.dto.UserCreationDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.UserDataDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.UserUpdateStatisticsDto;
 import com.lennertsoffers.pokemon_city_api.security.RoleType;
@@ -8,6 +9,7 @@ import com.lennertsoffers.pokemon_city_api.security.RoleType;
 import java.util.List;
 
 public interface UserService {
+    User register(UserCreationDto userCreationDto);
     void saveUser(User user);
     User addRoleToUser(String username, RoleType roleType);
     User getUser(String username);
