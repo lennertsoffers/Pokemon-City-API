@@ -1,10 +1,10 @@
 package com.lennertsoffers.pokemon_city_api.service;
 
-import com.lennertsoffers.pokemon_city_api.model.IncomeBuilding;
-
-import java.util.List;
-
 public interface IncomeBuildingService {
-    List<IncomeBuilding> getAllFromUser(Long id);
+    /**
+     * Collects the accumulated money in the IncomeBuilding with the provided id
+     * @param id The id of the IncomeBuilding where collect the money
+     * @return The amount of money that got collected
+     */
     Integer collect(Long id);
 }
