@@ -5,6 +5,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Configuration class where authentication and authorization gets configured
+ */
 public class AuthDsl extends AbstractHttpConfigurer<AuthDsl, HttpSecurity> {
     @Override
     public void configure(HttpSecurity http) {

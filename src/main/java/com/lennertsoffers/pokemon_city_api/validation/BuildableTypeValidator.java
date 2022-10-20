@@ -6,6 +6,10 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 
+/**
+ * <b>Validator for the type of a buildable</b>
+ * <p>Valid if the provided type exists in the {@link BuildableTypeEnum}</p>
+ */
 public class BuildableTypeValidator implements ConstraintValidator<BuildableTypeConstraint, String> {
     @Override
     public void initialize(BuildableTypeConstraint constraintAnnotation) {

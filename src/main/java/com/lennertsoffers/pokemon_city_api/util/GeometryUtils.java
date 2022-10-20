@@ -2,7 +2,19 @@ package com.lennertsoffers.pokemon_city_api.util;
 
 import com.lennertsoffers.pokemon_city_api.model.Buildable;
 
+/**
+ * Collection of Util methods for geometry
+ */
 public class GeometryUtils {
+    /**
+     * Checks if two buildables collide in the city
+     * @param buildable The first buildable object
+     * @param x The x-pos of the second object
+     * @param y The y-pos of the second object
+     * @param width The width of the second object
+     * @param height The height of the second object
+     * @return True if the buildables collide
+     */
     public static boolean collidesWith(Buildable buildable, int x, int y, int width, int height) {
         int a_x1 = buildable.getLocation().getX() - buildable.getWidth() + 1;
         int a_x2 = buildable.getLocation().getX();

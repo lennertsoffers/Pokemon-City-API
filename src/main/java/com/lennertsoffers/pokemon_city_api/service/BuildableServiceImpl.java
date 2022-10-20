@@ -27,6 +27,9 @@ public class BuildableServiceImpl implements BuildableService {
                 .getAuthUser()
                 .getId();
 
+        // Get all the buildables from the user that are not roads
+        // For each company, update the citizens
+        // Map the buildable to their corresponding buildableDto
         return buildableRepository
                 .getAllNotRoadFromUser(userId)
                 .stream()
@@ -55,6 +58,8 @@ public class BuildableServiceImpl implements BuildableService {
         if (optionalBuildable.isEmpty()) return null;
 
         Buildable buildable = optionalBuildable.get();
+
+        // Update the citizens if the buildable is a company
         if (buildable instanceof Company company) {
             company.getAssignedCitizens().forEach(Citizen::update);
         }
@@ -73,21 +78,27 @@ public class BuildableServiceImpl implements BuildableService {
 
     @Override
     public Buildable build(BuildableBuildDto buildableBuildDto) {
+        // Create an empty buildable
         Buildable buildable = buildableMapper.createBuildable(buildableBuildDto);
 
+        // Add the corresponding xp to the user
+        // Remove the corresponding money from the user
         User user = buildable.getCity().getUser();
         user.addXp(buildable.getXpWhenFinished());
         user.removeMoney(buildable.getPrice());
 
+        // If the buildable is a house, spawn the correct amount of citizens
         if (buildable instanceof House house) {
             for (int i = 0; i < house.getNumberOfCitizens(); i++) {
                 citizenService.spawnCitizen(user.getCity());
             }
         }
 
+        // Update the users statistics
         user.getStatistics().updateBuildingsBuild(1);
         user.getStatistics().updateMoneySpent(buildable.getPrice());
 
+        // Save the buildable in the database
         return this.buildableRepository.save(buildable);
     }
 
@@ -97,6 +108,8 @@ public class BuildableServiceImpl implements BuildableService {
         if (optionalBuildable.isEmpty()) return null;
 
         Buildable buildable = optionalBuildable.get();
+
+        // Set the new location of the buildable to the location in the BuildableMoveDto
         buildable.setLocation(new Location(buildableMoveDto.x(), buildableMoveDto.y()));
 
         return buildableRepository.save(buildable);
@@ -113,21 +126,30 @@ public class BuildableServiceImpl implements BuildableService {
         }
 
         Buildable buildable = optionalBuildable.get();
-
         User user = buildable.getCity().getUser();
 
+        // Add half of the price back to the user
         user.addMoney(buildable.getPrice() / 2);
 
-        if (buildable instanceof House) {
-            buildableDemolishDto.citizenIds().stream().distinct().forEach(citizenService::killCitizen);
-        } else if (buildable instanceof Company company) {
+        // If the buildable is a house, remove the citizenIds provided in the DTO
+        if (buildable instanceof House house) {
+            // Remove maximum the number of citizens of the house from the city
+            int limit = house.getNumberOfCitizens();
+            buildableDemolishDto.citizenIds().stream().distinct().limit(limit).forEach(citizenService::killCitizen);
+        }
+        // If the buildable is a company, un-assign all citizens
+        else if (buildable instanceof Company company) {
             company.unEmployAll();
         }
 
+        // Delete the buildable from the database
         buildableRepository.deleteById(buildableId);
 
-        user.getStatistics().updateBuildingsDemolished(1);
+        // If the buildable was a road, update the roads
         if (buildable instanceof Road) this.roadService.updateRoads();
+
+        // Update the statistics of the user
+        user.getStatistics().updateBuildingsDemolished(1);
 
         return true;
     }

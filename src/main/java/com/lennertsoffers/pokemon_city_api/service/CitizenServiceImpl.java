@@ -20,6 +20,10 @@ import java.util.*;
 @Transactional
 @RequiredArgsConstructor
 public class CitizenServiceImpl implements CitizenService {
+    private static final int SPECIALISATION_DATA_VALUE_MULTIPLIER = 12;
+    private static final int SPECIALISATION_DATA_VALUE_MAX = 30;
+    private static final int MAX_SPECIALISATION_DATA_VALUE_MULTIPLIER = 40;
+    private static final int MAX_SPECIALISATION_DATA_VALUE_MAX = 100;
     private static final List<String> DEFAULT_NAMES = List.of(
             "James",
             "Mary",
@@ -179,25 +183,37 @@ public class CitizenServiceImpl implements CitizenService {
     }
 
     @Override
-    public Citizen spawnCitizen(City city) {
+    public void spawnCitizen(City city) {
         Random random = new Random();
 
+        // Create a new citizen object
         Citizen citizen = new Citizen();
+        // Assign a random name
         citizen.setName(DEFAULT_NAMES.get(random.nextInt(DEFAULT_NAMES.size())));
+        // Set the city of the citizen to the city where it should be spawned
         citizen.setCity(city);
-        Map<SpecialisationType, Integer> specialisationData = this.generateSpecialisationData(15, 50);
-        Map<SpecialisationType, Integer> maxSpecialisationData = this.generateSpecialisationData(40, 100);
+        // Generate two maps of specialisationData
+        // - One for the starting values of the citizen
+        // - One for the max values of the specialisation data
+        Map<SpecialisationType, Integer> specialisationData = this.generateSpecialisationData(SPECIALISATION_DATA_VALUE_MULTIPLIER, SPECIALISATION_DATA_VALUE_MAX);
+        Map<SpecialisationType, Integer> maxSpecialisationData = this.generateSpecialisationData(MAX_SPECIALISATION_DATA_VALUE_MULTIPLIER, MAX_SPECIALISATION_DATA_VALUE_MAX);
 
+        // Merge the two maps of specialisation data
         for (SpecialisationType specialisationType : SpecialisationType.values()) {
+            // The value of the specialisation data cannot be higher than the max for this specialisation
             int minValue = Math.min(specialisationData.get(specialisationType), maxSpecialisationData.get(specialisationType));
             specialisationData.put(specialisationType, minValue);
         }
 
+        // Set the specialisationData
         citizen.setSpecialisationData(specialisationData);
+        // Set the maxSpecialisationData
         citizen.setMaxSpecialisationData(maxSpecialisationData);
+        // Generate and set a random level speed for the citizen
         citizen.setLevelSpeed((int) Math.round(Math.abs(random.nextGaussian() * 2)) + 1);
 
-        return citizenRepository.save(citizen);
+        // Save the citizen to the database
+        citizenRepository.save(citizen);
     }
 
     @Override
@@ -238,10 +254,17 @@ public class CitizenServiceImpl implements CitizenService {
         return citizen.get().getCity().getUser().getId().equals(userService.getAuthUser().getId());
     }
 
+    /**
+     * Generates a map of SpecialisationData for each literal of the SpecialisationType enum
+     * @param multiplier Value to multiply with the RNG
+     * @param maxValue The max value of specialisation
+     * @return The map with the generated SpecialisationData
+     */
     private Map<SpecialisationType, Integer> generateSpecialisationData(int multiplier, int maxValue) {
         Random random = new Random();
         Map<SpecialisationType, Integer> specialisationData = new HashMap<>();
 
+        // Generate a value for each type in the SpecialisationType enum
         for (SpecialisationType specialisationType : SpecialisationType.values()) {
             int value = (int) Math.min(Math.abs(Math.round(random.nextGaussian() * multiplier)), maxValue);
 
