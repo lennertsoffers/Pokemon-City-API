@@ -6,6 +6,10 @@ import lombok.RequiredArgsConstructor;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * <b>Validator for the username</b>
+ * <p>Valid if the username doesn't exist</p>
+ */
 @RequiredArgsConstructor
 public class UsernameAlreadyExistsValidator implements ConstraintValidator<UsernameAlreadyExistsConstraint, String> {
     private final UserService userService;

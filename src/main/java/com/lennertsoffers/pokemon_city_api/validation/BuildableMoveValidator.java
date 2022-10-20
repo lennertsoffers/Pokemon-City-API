@@ -10,6 +10,10 @@ import lombok.RequiredArgsConstructor;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * <b>Validator for moving houses</b>
+ * <p>Valid if the new location of the buildable doesn't collide with any other building in the city</p>
+ */
 @RequiredArgsConstructor
 public class BuildableMoveValidator implements ConstraintValidator<BuildableMoveConstraint, BuildableMoveDto> {
     private final UserService userService;

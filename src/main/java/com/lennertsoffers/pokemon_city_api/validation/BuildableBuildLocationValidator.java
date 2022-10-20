@@ -10,6 +10,10 @@ import lombok.AllArgsConstructor;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * <b>Validator for the location of building</b>
+ * <p>Valid if the buildable doesn't collide with any other building in the city</p>
+ */
 @AllArgsConstructor
 public class BuildableBuildLocationValidator implements ConstraintValidator<BuildableBuildLocationConstraint, BuildableBuildDto> {
     private final UserService userService;

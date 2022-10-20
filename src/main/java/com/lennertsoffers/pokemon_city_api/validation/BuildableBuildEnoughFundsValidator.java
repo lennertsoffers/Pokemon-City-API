@@ -9,6 +9,10 @@ import lombok.RequiredArgsConstructor;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * <b>Validator for enough funds for building</b>
+ * <p>Valid if the user has enough money to buy the buildable</p>
+ */
 @RequiredArgsConstructor
 public class BuildableBuildEnoughFundsValidator implements ConstraintValidator<BuildableBuildEnoughFundsConstraint, BuildableBuildDto> {
     private final BuildableService buildableService;

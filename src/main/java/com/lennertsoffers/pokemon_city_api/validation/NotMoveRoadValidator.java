@@ -9,6 +9,10 @@ import lombok.RequiredArgsConstructor;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * <b>Validator to not move roads</b>
+ * <p>Valid if the buildable is found and the buildable is not of type road</p>
+ */
 @RequiredArgsConstructor
 public class NotMoveRoadValidator implements ConstraintValidator<NotMoveRoadConstraint, BuildableMoveDto>  {
     private final BuildableService buildableService;
@@ -22,7 +26,6 @@ public class NotMoveRoadValidator implements ConstraintValidator<NotMoveRoadCons
     public boolean isValid(BuildableMoveDto buildableMoveDto, ConstraintValidatorContext constraintValidatorContext) {
         Buildable buildable = this.buildableService.getById(buildableMoveDto.id());
         if (buildable == null) return false;
-        if (buildable.getBuildableTypeEnum().equals(BuildableTypeEnum.ROAD)) return false;
-        return true;
+        return !buildable.getBuildableTypeEnum().equals(BuildableTypeEnum.ROAD);
     }
 }

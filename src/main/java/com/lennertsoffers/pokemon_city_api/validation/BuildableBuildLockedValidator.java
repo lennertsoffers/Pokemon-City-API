@@ -9,6 +9,10 @@ import lombok.AllArgsConstructor;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * <b>Validator for locked buildings for building</b>
+ * <p>Valid if the level of the user is equal or higher than the minimum level the user needs to build the buildable</p>
+ */
 @AllArgsConstructor
 public class BuildableBuildLockedValidator implements ConstraintValidator<BuildableBuildLockedConstraint, BuildableBuildDto> {
     private final BuildableService buildableService;

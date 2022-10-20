@@ -8,6 +8,10 @@ import lombok.AllArgsConstructor;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * <b>Validator for building roads</b>
+ * <p>Valid if the new road doesn't collide with any other object in the city</p>
+ */
 @AllArgsConstructor
 public class BuildRoadsValidator implements ConstraintValidator<BuildRoadsConstraint, BuildRoadDto> {
     private final UserService userService;
