@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * <b>Represents a users statistics keeping track of his/her game progress</b>
+ */
 @Entity
 @Data
 @NoArgsConstructor
@@ -26,6 +29,11 @@ public class Statistics {
     @JsonBackReference
     private User user;
 
+    /**
+     * <p>Calculates the total value of the user</p>
+     * <p>The total value is the sum of the value of all the users buildables his/her money</p>
+     * @return The users total value
+     */
     public int getTotalValue() {
         int buildableValue = this
                 .getUser()
@@ -38,6 +46,10 @@ public class Statistics {
         return buildableValue + this.getUser().getMoney();
     }
 
+    /**
+     * Calculates the income that a user gets per minute
+     * @return The income a user gets per minute
+     */
     public double getIncomePerMinute() {
         return this.getUser()
                 .getCity()
@@ -49,6 +61,10 @@ public class Statistics {
                 .sum();
     }
 
+    /**
+     * Calculates the amount of citizens the user has who have a statistic where the value equals the max value for the statistic for that citizen
+     * @return The amount of maxed citizens of the user
+     */
     public int getMaxedCitizens() {
         return (int) this.getUser()
                 .getCity()

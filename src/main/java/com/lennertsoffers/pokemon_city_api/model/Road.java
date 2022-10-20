@@ -10,6 +10,10 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 
+/**
+ * <b>Represents a road in the city</b>
+ * <p>Roads are free and have a satisfactionModifier of 0</p>
+ */
 @Entity
 @DiscriminatorValue("Road")
 @Getter

@@ -4,6 +4,9 @@ import com.lennertsoffers.pokemon_city_api.model.SpritesheetLocation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Enumerates the different roads
+ */
 @Getter
 @AllArgsConstructor
 public enum RoadType implements BuildableType {

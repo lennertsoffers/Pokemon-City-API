@@ -1,11 +1,16 @@
 package com.lennertsoffers.pokemon_city_api.model.dto;
 
+import com.lennertsoffers.pokemon_city_api.model.Buildable;
 import com.lennertsoffers.pokemon_city_api.model.Location;
 import com.lennertsoffers.pokemon_city_api.model.SpritesheetLocation;
 import com.lennertsoffers.pokemon_city_api.model.type.BuildableTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * <p>DTO containing all important data about a Buildable</p>
+ * @see Buildable
+ */
 @AllArgsConstructor
 @Getter
 public class BuildableDto {

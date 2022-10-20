@@ -10,6 +10,9 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * <p>DTO containing all important info about a company together with its employees (assigned citizens)</p>
+ */
 @Getter
 public class CompanyWithEmployeesDto extends CompanyDto {
     private final List<CitizenDto> employees;

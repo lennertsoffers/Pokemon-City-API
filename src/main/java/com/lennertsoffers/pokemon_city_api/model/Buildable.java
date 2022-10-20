@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * Represents any object that can be build in the city
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Data

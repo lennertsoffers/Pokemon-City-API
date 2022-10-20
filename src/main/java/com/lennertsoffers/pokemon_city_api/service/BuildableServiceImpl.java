@@ -73,7 +73,7 @@ public class BuildableServiceImpl implements BuildableService {
 
     @Override
     public Buildable build(BuildableBuildDto buildableBuildDto) {
-        Buildable buildable = buildableMapper.toBuildable(buildableBuildDto);
+        Buildable buildable = buildableMapper.createBuildable(buildableBuildDto);
 
         User user = buildable.getCity().getUser();
         user.addXp(buildable.getXpWhenFinished());

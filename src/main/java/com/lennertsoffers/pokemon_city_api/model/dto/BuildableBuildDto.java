@@ -8,6 +8,13 @@ import com.lennertsoffers.pokemon_city_api.validation.BuildableTypeConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+/**
+ * <p>DTO containing data to create a new buildable</p>
+ * @param name Name of the buildable
+ * @param x X-Position of the buildable
+ * @param y Y-Position of the buildable
+ * @param buildableType BuildableType of the buildable
+ */
 @BuildableBuildLocationConstraint
 @BuildableBuildLockedConstraint
 @BuildableBuildEnoughFundsConstraint

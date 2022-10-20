@@ -7,6 +7,9 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Represents the city of a user
+ */
 @Entity
 @Getter
 @Setter
@@ -34,14 +37,32 @@ public class City {
     @JsonManagedReference
     private List<Citizen> citizens;
 
+    /**
+     * <p>Calculates the total satisfaction in the city</p>
+     * <ul>
+     *     <li>The total satisfaction is the sum of the satisfactionModifiers of all buildings in the city.</li>
+     *     <li>This total is bound by the 'MIN_SATISFACTION' and the 'MAX_SATISFACTION'</li>
+     *     <li>This bound total is than divided by 100</li>
+     * </ul>
+     * @return The total amount of satisfaction in the city
+     */
     public double getSatisfaction() {
+        // Calculate the sum of the satisfactionModifiers of all buildings in the city
         int satisfactionSum = this.getBuildables().stream().mapToInt(Buildable::getSatisfactionModifier).sum();
 
+        // Bound this sum between a min and max
         satisfactionSum = Math.min(MAX_SATISFACTION, Math.max(MIN_SATISFACTION, satisfactionSum));
 
+        // Return this bound sum divided by 100
         return satisfactionSum / 100F;
     }
 
+    /**
+     * <p>Calculates true amount of citizens that can and should live in the city</p>
+     * <p>This is calculated by calculating the sum of citizens that houses hold</p>
+     * <p>This is a safer way to calculate the true amount of citizens, since 'numberOfCitizens' is a static value unlike counting the amount of citizen instances</p>
+     * @return The amount of citizens living in the city
+     */
     public int getAmountOfCitizens() {
         return this.getBuildables()
                 .stream()
@@ -52,6 +73,10 @@ public class City {
                 .sum();
     }
 
+    /**
+     * <p>Calculates the amount of citizens in the city that are assigned to a company</p>
+     * @return The amount of citizens that are assigned to a company
+     */
     public int getAmountOfEmployedCitizens() {
         return (int) this.getCitizens()
                 .stream()
