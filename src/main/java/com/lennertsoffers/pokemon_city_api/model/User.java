@@ -26,7 +26,6 @@ public class User {
     private String username;
     private String password;
 
-    // TODO - Reset to default for production
     private int xp = 0;
     private int money = 50000;
 
