@@ -6,6 +6,7 @@ import com.lennertsoffers.pokemon_city_api.model.Statistics;
 import com.lennertsoffers.pokemon_city_api.model.User;
 import com.lennertsoffers.pokemon_city_api.model.dto.UserCreationDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.UserDataDto;
+import com.lennertsoffers.pokemon_city_api.model.dto.UserFilterDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.UserUpdateStatisticsDto;
 import com.lennertsoffers.pokemon_city_api.model.mapper.UserMapper;
 import com.lennertsoffers.pokemon_city_api.repository.CityRepository;
@@ -25,6 +26,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static com.lennertsoffers.pokemon_city_api.security.RoleType.PLAYER;
 
@@ -88,6 +91,32 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User getUser(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public User getUser(Long userId) {
+        return this.userRepository.findById(userId).orElse(null);
+    }
+
+    @Override
+    public List<UserDataDto> getRanking(Integer min, Integer amount) {
+        List<User> users = this.userRepository.findAll();
+        int skip = Math.max(min == null ? 0 : min - 1, 0);
+        int limit = (amount == null ? users.size() : amount);
+
+        return users
+                .stream()
+                .filter(user -> user.getStatistics() != null)
+                .sorted((a, b) -> b.getStatistics().getScore() - a.getStatistics().getScore())
+                .skip(skip)
+                .limit(limit)
+                .map(userMapper::toUserDataDto)
+                .toList();
+    }
+
+    @Override
+    public List<UserDataDto> getFiltered(UserFilterDto filter) {
+        return this.userRepository.findAll().stream().map(userMapper::toUserDataDto).toList();
     }
 
     @Override

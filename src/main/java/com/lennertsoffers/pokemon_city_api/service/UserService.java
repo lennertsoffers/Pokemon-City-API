@@ -3,6 +3,7 @@ package com.lennertsoffers.pokemon_city_api.service;
 import com.lennertsoffers.pokemon_city_api.model.User;
 import com.lennertsoffers.pokemon_city_api.model.dto.UserCreationDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.UserDataDto;
+import com.lennertsoffers.pokemon_city_api.model.dto.UserFilterDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.UserUpdateStatisticsDto;
 import com.lennertsoffers.pokemon_city_api.security.RoleType;
 
@@ -37,6 +38,28 @@ public interface UserService {
      * @return The user instance if its found, otherwise null
      */
     User getUser(String username);
+
+    /**
+     * Finds and gets the user by its id
+     * @param userId The id of the user to be returned
+     * @return The user instance if its found, otherwise null
+     */
+    User getUser(Long userId);
+
+    /**
+     * Gets the ranking of the users after the minimum for the amount
+     * @param min Minimum rank
+     * @param amount Amount of users
+     * @return The users ranked by score
+     */
+    List<UserDataDto> getRanking(Integer min, Integer amount);
+
+    /**
+     * Gets the users that meet the filters
+     * @param filter The filters to be met
+     * @return The filtered list of users
+     */
+    List<UserDataDto> getFiltered(UserFilterDto filter);
 
     /**
      * @return The user that is authentication in the securityContext

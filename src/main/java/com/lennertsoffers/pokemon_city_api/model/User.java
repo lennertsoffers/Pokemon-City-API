@@ -36,7 +36,7 @@ public class User {
     @JsonBackReference
     private City city;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Statistics statistics;
 
