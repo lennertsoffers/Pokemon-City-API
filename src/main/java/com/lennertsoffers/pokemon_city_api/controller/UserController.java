@@ -11,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -42,10 +42,10 @@ public class UserController {
         return ResponseEntity.ok().body(this.userService.getRanking(min.orElse(null), amount.orElse(null)));
     }
 
-//    @GetMapping("/filter")
-//    public ResponseEntity<List<UserDataDto>> getFiltered(@RequestParam UserFilterDto filter) {
-//
-//    }
+    @GetMapping("/filter")
+    public ResponseEntity<List<UserDataDto>> getFiltered(@Valid UserFilterDto filter) {
+        return ResponseEntity.ok().body(this.userService.getFiltered(filter));
+    }
 
     /**
      * <b>/users/me</b>

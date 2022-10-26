@@ -26,8 +26,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.function.Predicate;
 
 import static com.lennertsoffers.pokemon_city_api.security.RoleType.PLAYER;
 
@@ -116,7 +115,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public List<UserDataDto> getFiltered(UserFilterDto filter) {
-        return this.userRepository.findAll().stream().map(userMapper::toUserDataDto).toList();
+        Predicate<User> filterPredicate = this.getFilterPredicate(filter.field(), filter.operation(), filter.value());
+
+        return this.userRepository
+                .findAll()
+                .stream()
+                .filter(user -> user.getCity() != null)
+                .filter(filterPredicate)
+                .map(userMapper::toUserDataDto)
+                .toList();
     }
 
     @Override
@@ -140,5 +147,33 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void updateStatistics(UserUpdateStatisticsDto userUpdateStatisticsDto) {
         this.getAuthUser().getStatistics().updateTimePlayed(userUpdateStatisticsDto.sessionTime());
+    }
+
+    private Predicate<User> getFilterPredicate(String field, String operation, String value) {
+        if (field.equals("username")) return user -> user.getUsername().startsWith((value));
+
+        return user -> {
+            Integer checkedValue = switch (field) {
+                case "score" -> user.getStatistics().getScore();
+                case "level" -> user.getLevel();
+                default -> null;
+            };
+
+            if (checkedValue == null) return false;
+            if (!value.matches("[0-9]+")) return false;
+
+            Integer intValue = Integer.parseInt(value);
+
+
+            return switch (operation) {
+                case ">" -> checkedValue > intValue;
+                case ">=" -> checkedValue >= intValue;
+                case "<" -> checkedValue < intValue;
+                case "<=" -> checkedValue <= intValue;
+                case "==" -> checkedValue.equals(intValue);
+                default -> false;
+            };
+        };
+
     }
 }
