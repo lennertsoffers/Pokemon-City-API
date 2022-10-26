@@ -3,6 +3,7 @@ package com.lennertsoffers.pokemon_city_api.exception;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,6 +23,18 @@ public class ConstraintViolationExceptionHandler {
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .filter(Objects::nonNull)
                 .toList();
+        return new ResponseEntity<>(errors, null, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<List<String>> handle(BindException exception) {
+        List<String> errors = exception
+                .getAllErrors()
+                .stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .filter(Objects::nonNull)
+                .toList();
+
         return new ResponseEntity<>(errors, null, HttpStatus.BAD_REQUEST);
     }
 }

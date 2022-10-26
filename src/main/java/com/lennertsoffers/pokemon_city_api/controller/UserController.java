@@ -2,12 +2,18 @@ package com.lennertsoffers.pokemon_city_api.controller;
 
 import com.lennertsoffers.pokemon_city_api.model.User;
 import com.lennertsoffers.pokemon_city_api.model.dto.UserDataDto;
+import com.lennertsoffers.pokemon_city_api.model.dto.UserFilterDto;
 import com.lennertsoffers.pokemon_city_api.model.dto.UserUpdateStatisticsDto;
+import com.lennertsoffers.pokemon_city_api.model.mapper.UserMapper;
 import com.lennertsoffers.pokemon_city_api.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * <b>/api/users</b>
@@ -21,6 +27,25 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final UserMapper userMapper;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDataDto> getUserById(@PathVariable("id") Long userId) {
+        User user = this.userService.getUser(userId);
+        if (user != null) return ResponseEntity.ok().body(userMapper.toUserDataDto(user));
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/ranking")
+    public ResponseEntity<List<UserDataDto>> getRanking(@RequestParam("min") Optional<Integer> min, @RequestParam("amount") Optional<Integer> amount) {
+        return ResponseEntity.ok().body(this.userService.getRanking(min.orElse(null), amount.orElse(null)));
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<UserDataDto>> getFiltered(@Valid UserFilterDto filter) {
+        return ResponseEntity.ok().body(this.userService.getFiltered(filter));
+    }
 
     /**
      * <b>/users/me</b>

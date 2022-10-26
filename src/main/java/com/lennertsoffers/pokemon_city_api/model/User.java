@@ -2,6 +2,7 @@ package com.lennertsoffers.pokemon_city_api.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.lennertsoffers.pokemon_city_api.util.LevelUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +37,7 @@ public class User {
     @JsonBackReference
     private City city;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Statistics statistics;
 
@@ -62,6 +63,6 @@ public class User {
      * @return The user level
      */
     public int getLevel() {
-        return (int) Math.floor((500 + Math.sqrt(250000 + 2000 * this.getXp())) / 1000);
+        return LevelUtils.getLevelFromXp(this.getXp());
     }
 }

@@ -22,5 +22,6 @@ public record StatisticsDto(
         int moneySpent,
         int moneyCollected,
         int incomePerMinute,
-        int maxedCitizens
+        int maxedCitizens,
+        int score
 ) {}

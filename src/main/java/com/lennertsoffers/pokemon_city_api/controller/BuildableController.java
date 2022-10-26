@@ -110,7 +110,6 @@ public class BuildableController {
     @DeleteMapping("/demolish")
     @PreAuthorize("@buildableServiceImpl.belongsToUser(#buildableDemolishDto.buildableId())")
     public ResponseEntity<Boolean> demolish(@P("buildableDemolishDto") @Valid @RequestBody BuildableDemolishDto buildableDemolishDto) {
-        // TODO - Take only needed citizenIds to delete in validation and only remove needed in service
         if (buildableService.demolish(buildableDemolishDto)) return ResponseEntity.ok().body(true);
 
         return ResponseEntity.notFound().build();

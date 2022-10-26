@@ -83,6 +83,16 @@ public class Statistics {
                 .count();
     }
 
+    /**
+     * Calculates the score of the user
+     * Score is calculating to multiply all significant statistics from the user
+     * The score is at least one
+     * @return The score of the user
+     */
+    public int getScore() {
+        return (int) Math.round(Math.max(1, this.getTotalValue()) * Math.max(1, this.getIncomePerMinute()) * Math.max(1, this.getMaxedCitizens()) * Math.max(1, this.getBuildingsBuilt()) / 1000F);
+    }
+
     public void updateTimePlayed(int amount) {
         this.timePlayed += amount;
     }
