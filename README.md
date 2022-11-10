@@ -2,6 +2,8 @@
 
 Hello and welcome to the documentation of the Pokemon City API. This is the back end service that enables you to play the wonderful browser game Pokemon City. In this documentation, I will bring you along the way of the development process of the API.
 
+[Play Pokemon City here!](https://lennertsoffers.be/pokemon-city)
+
 ## What is Pokemon City
 
 Pokemon City is a city builder game. The goal of the game is to become the richest city owner, and develop your city as far as possible. It's a creative game because everyone can design his/her city as wanted.
