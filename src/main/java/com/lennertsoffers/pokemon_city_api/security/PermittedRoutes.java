@@ -10,7 +10,12 @@ public class PermittedRoutes {
             "/auth/login",
             "/auth/register",
             "/auth/refreshToken",
-            "/api/buildables/data"
+            "/api/buildables/data",
+            "/swagger-ui/*",
+            "/swagger-resources/configuration/ui",
+            "/swagger-resources/configuration/security",
+            "/swagger-resources",
+            "/v2/api-docs"
     );
 
     /**

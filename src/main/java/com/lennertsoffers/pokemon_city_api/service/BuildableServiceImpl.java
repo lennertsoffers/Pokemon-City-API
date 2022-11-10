@@ -43,6 +43,15 @@ public class BuildableServiceImpl implements BuildableService {
     }
 
     @Override
+    public List<BuildablePlacementDto> getBuildablesFromUser(Long userId) {
+        return this.buildableRepository
+                .findAllByCityUserId(userId)
+                .stream()
+                .map(buildableMapper::toBuildablePlacementDto)
+                .toList();
+    }
+
+    @Override
     public BuildableDataDto getBuildableData() {
         return new BuildableDataDto(
                 Arrays.stream(HouseType.values()).map(typeDataMapper::toHouseDataDto).toList(),
@@ -95,7 +104,7 @@ public class BuildableServiceImpl implements BuildableService {
         }
 
         // Update the users statistics
-        user.getStatistics().updateBuildingsBuild(1);
+        user.getStatistics().updateBuildingsBuilt(1);
         user.getStatistics().updateMoneySpent(buildable.getPrice());
 
         // Save the buildable in the database

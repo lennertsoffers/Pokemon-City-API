@@ -37,6 +37,11 @@ public class BuildableController {
         return ResponseEntity.ok().body(buildableService.getBuildableDtos());
     }
 
+    @GetMapping("/fromUser/{id}")
+    public ResponseEntity<List<BuildablePlacementDto>> getBuildablesFromUser(@PathVariable("id") Long userId) {
+        return ResponseEntity.ok().body(this.buildableService.getBuildablesFromUser(userId));
+    }
+
     /**
      * <b>/api/buildables/{id}</b>
      * <p>Returns the single buildable with the provided id in the request</p>

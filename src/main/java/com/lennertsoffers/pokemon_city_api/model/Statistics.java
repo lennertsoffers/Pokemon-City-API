@@ -89,15 +89,15 @@ public class Statistics {
      * The score is at least one
      * @return The score of the user
      */
-    public int getScore() {
-        return (int) Math.round(Math.max(1, this.getTotalValue()) * Math.max(1, this.getIncomePerMinute()) * Math.max(1, this.getMaxedCitizens()) * Math.max(1, this.getBuildingsBuilt()) / 1000F);
+    public long getScore() {
+        return Math.round(Math.max(1, this.getTotalValue()) * Math.max(1, this.getIncomePerMinute()) * Math.max(1, this.getMaxedCitizens()) * Math.max(1, this.getBuildingsBuilt()) / 1000F);
     }
 
     public void updateTimePlayed(int amount) {
         this.timePlayed += amount;
     }
 
-    public void updateBuildingsBuild(int amount) {
+    public void updateBuildingsBuilt(int amount) {
         this.buildingsBuilt += amount;
     }
 

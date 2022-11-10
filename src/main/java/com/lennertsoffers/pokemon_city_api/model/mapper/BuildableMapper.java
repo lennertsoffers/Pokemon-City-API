@@ -174,6 +174,31 @@ public class BuildableMapper {
     }
 
     /**
+     * Maps a buildable to a BuildablePlacementDto
+     * This only includes the needed info to show the buildable
+     * @param buildable The buildable to be converted
+     * @return The mapped BuildablePlacementDto
+     */
+    public BuildablePlacementDto toBuildablePlacementDto(Buildable buildable) {
+        if (buildable instanceof Company company) {
+            return new CompanyPlacementDto(
+                    buildable.getId(),
+                    buildable.getLocation(),
+                    buildable.getBuildableTypeEnum(),
+                    buildable.getSpritesheetLocation(),
+                    company.getSpecialisationType()
+            );
+        }
+
+        return new BuildablePlacementDto(
+                buildable.getId(),
+                buildable.getLocation(),
+                buildable.getBuildableTypeEnum(),
+                buildable.getSpritesheetLocation()
+        );
+    }
+
+    /**
      * <p>Maps a Buildable object to a BuildableDto object</p>
      * <p>Used to map to a generic buildable instead of a specific subtype</p>
      * @param buildable The Buildable that has to be mapped
