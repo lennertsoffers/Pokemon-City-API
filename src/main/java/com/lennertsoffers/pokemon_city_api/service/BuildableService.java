@@ -14,6 +14,12 @@ public interface BuildableService {
     List<BuildableDto> getBuildableDtos();
 
     /**
+     * Gets a list of the buildables in the city of the user with the provided id
+     * @return A list of BuildablePlacementDtos
+     */
+    List<BuildablePlacementDto> getBuildablesFromUser(Long userId);
+
+    /**
      * <p>Returns a list of all the static buildable data that is used in the application</p>
      * <p>This will translate to a list of all the TypeEnums that are present in the game</p>
      * @return A list containing all the static data for buildables

@@ -106,7 +106,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return users
                 .stream()
                 .filter(user -> user.getStatistics() != null)
-                .sorted((a, b) -> b.getStatistics().getScore() - a.getStatistics().getScore())
+                .sorted((a, b) -> {
+                    long diff = b.getStatistics().getScore() - a.getStatistics().getScore();
+                    if (diff > 0) return 1;
+                    if (diff == 0) return 0;
+                    return -1;
+                })
                 .skip(skip)
                 .limit(limit)
                 .map(userMapper::toUserDataDto)
@@ -153,24 +158,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (field.equals("username")) return user -> user.getUsername().startsWith((value));
 
         return user -> {
-            Integer checkedValue = switch (field) {
+            Long checkedValue = switch (field) {
                 case "score" -> user.getStatistics().getScore();
-                case "level" -> user.getLevel();
+                case "level" -> (long) user.getLevel();
                 default -> null;
             };
 
             if (checkedValue == null) return false;
             if (!value.matches("[0-9]+")) return false;
 
-            Integer intValue = Integer.parseInt(value);
-
+            Long longValue = Long.parseLong(value);
 
             return switch (operation) {
-                case ">" -> checkedValue > intValue;
-                case ">=" -> checkedValue >= intValue;
-                case "<" -> checkedValue < intValue;
-                case "<=" -> checkedValue <= intValue;
-                case "==" -> checkedValue.equals(intValue);
+                case ">" -> checkedValue > longValue;
+                case ">=" -> checkedValue >= longValue;
+                case "<" -> checkedValue < longValue;
+                case "<=" -> checkedValue <= longValue;
+                case "==" -> checkedValue.equals(longValue);
                 default -> false;
             };
         };
