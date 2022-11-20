@@ -21,7 +21,7 @@ import java.util.Optional;
  * @see User
  */
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @CrossOrigin(origins = "*")
 @Validated
 @RequiredArgsConstructor
